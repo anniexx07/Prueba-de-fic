@@ -89,6 +89,273 @@ body {
   display: none;
   position: absolute;
   top: 30px;
+  bottom: 35px;
+  left: 0;
+  right: 0;
+  background: #fff;
+  z-index: 5;
+}
+
+.screen.active { display: block; }
+#home-screen { background: transparent; }
+
+/* Dock Inferior en el escritorio */
+.dock-container {
+  position: absolute;
+  bottom: 45px;
+  left: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 24px;
+  padding: 10px 8px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 20;
+}
+
+.app-icon {
+  text-align: center;
+  color: #fff;
+  font-size: 10px;
+  cursor: pointer;
+  width: 52px;
+}
+
+.icon-shape {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 3px auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.icon-img { width: 26px; height: 26px; object-fit: contain; }
+.emoji-icon { font-size: 24px; line-height: 1; }
+.phone-bg { background: #34c759; }
+.wa-bg { background: #25d366; }
+.ig-bg { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+.gallery-bg { background: linear-gradient(#ff9500, #ff5e36); }
+
+/* Headers */
+.app-header {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Teléfono */
+.phone-header { background: #34c759; }
+.phone-app-content { padding: 10px; font-size: 12px; }
+.call-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+.missed { color: #ff3b30; }
+.keypad { margin-top: 15px; text-align: center; }
+.dial-display { height: 25px; font-size: 16px; font-weight: bold; margin-bottom: 10px; }
+.keypad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0 20px; }
+.keypad-grid button { padding: 10px; font-size: 16px; border-radius: 50%; border: 1px solid #ccc; background: #f9f9f9; cursor: pointer; }
+
+/* WhatsApp */
+.wa-header { background: #075e54; color: #fff; }
+.wa-content { background: #efeae2; height: calc(100% - 40px); overflow-y: auto; }
+.chat-item { display: flex; padding: 10px; background: #fff; border-bottom: 1px solid #eee; cursor: pointer; }
+.avatar-placeholder { font-size: 24px; margin-right: 10px; }
+.chat-thread { padding: 10px; }
+.msg { padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; max-width: 80%; font-size: 12px; }
+.msg-in { background: #fff; color: #000; }
+.msg-out { background: #dcf8c6; margin-left: auto; color: #000; }
+.sub-back-btn { border: none; background: #ddd; padding: 5px 10px; border-radius: 4px; margin-bottom: 10px; cursor: pointer; font-size: 11px; }
+
+/* INSTAGRAM */
+.ig-header { background: #fff; border-bottom: 1px solid #dbdbdb; color: #000; }
+.ig-logo-text { font-family: "Georgia", serif; font-size: 18px; font-style: italic; }
+
+.ig-main-container {
+  height: calc(100% - 85px);
+  overflow-y: auto;
+  background: #fff;
+}
+
+.ig-view { display: none; }
+.ig-view.active { display: block; }
+
+.stories-bar {
+  display: flex;
+  gap: 12px;
+  padding: 10px;
+  border-bottom: 1px solid #efefef;
+  overflow-x: auto;
+}
+
+.story-item { text-align: center; font-size: 10px; }
+.story-ring {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  padding: 2px;
+  margin-bottom: 3px;
+}
+.story-avatar {
+  width: 100%;
+  height: 100%;
+  background: #eee;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+}
+
+.ig-post { border-bottom: 1px solid #efefef; margin-bottom: 10px; }
+.post-user-info { display: flex; align-items: center; gap: 8px; padding: 8px 10px; font-size: 12px; }
+.post-avatar { width: 24px; height: 24px; border-radius: 50%; background: #ccc; }
+.post-media-box { background: #f0f0f0; height: 180px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #777; }
+.post-actions { padding: 6px 10px; font-size: 14px; }
+.post-caption-box { padding: 0 10px 10px 10px; font-size: 11px; }
+
+.search-input-box { padding: 10px; }
+.search-input-box input { width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #ddd; background: #efefef; font-size: 12px; }
+.recent-search-section { padding: 0 10px; }
+.section-title { font-size: 12px; font-weight: bold; margin-bottom: 10px; color: #333; }
+.search-user-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f5f5f5; cursor: pointer; font-size: 12px; }
+.search-avatar { width: 36px; height: 36px; border-radius: 50%; background: #ddd; display: flex; align-items: center; justify-content: center; }
+
+.back-to-search-btn { border: none; background: none; color: #0095f6; padding: 10px; font-size: 11px; cursor: pointer; }
+.profile-detail-card { padding: 10px; }
+.profile-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.profile-avatar-large { width: 60px; height: 60px; border-radius: 50%; background: #bbb; }
+.profile-stats { display: flex; gap: 15px; text-align: center; font-size: 11px; }
+.profile-name { font-size: 13px; }
+.profile-handle { font-size: 11px; color: #666; margin-bottom: 5px; }
+.profile-bio { font-size: 11px; margin-bottom: 10px; }
+.ig-grid { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 10px; }
+.grid-post-item { background: #eee; width: 32%; height: 75px; display: flex; align-items: center; justify-content: center; font-size: 10px; cursor: pointer; }
+
+.ig-bottom-nav {
+  height: 45px;
+  border-top: 1px solid #dbdbdb;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #fff;
+}
+
+.ig-nav-btn { background: none; border: none; font-size: 18px; cursor: pointer; opacity: 0.5; }
+.ig-nav-btn.active { opacity: 1; }
+
+/* Galería */
+.gallery-header { background: #ff9500; }
+.gallery-content { padding: 10px; }
+.gallery-title { font-size: 12px; font-weight: bold; margin-bottom: 10px; color: #333; }
+.photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.photo-item { height: 100px; border-radius: 8px; overflow: hidden; cursor: pointer; }
+.photo-item img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Visor Modal Fotos */
+.photo-viewer {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.95);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+}
+.photo-viewer img { max-width: 100%; max-height: 70%; border-radius: 8px; }
+.photo-viewer p { color: #fff; margin-top: 10px; font-size: 12px; }
+.close-viewer-btn { position: absolute; top: 15px; right: 15px; background: #ff3b30; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 11px; }
+
+/* BARRA DE NAVEGACIÓN ANDROID (Parte inferior) */
+.android-nav-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 35px;
+  background: #000;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 40;
+}
+
+.android-btn {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 5px 20px;
+}
+
+.android-btn:active {
+  color: #fff;
+}
+
+.speaker-notch {
+  width: 50px;
+  height: 4px;
+  background: #000;
+  border-radius: 4px;
+  position: absolute;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #2b5876 0%, #4e4376 100%);
+  border-radius: 35px;
+  overflow: hidden;
+  position: relative;
+}
+
+.status-bar {
+  height: 30px;
+  color: #fff;
+  font-size: 11px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  background: rgba(0,0,0,0.25);
+  z-index: 30;
+  position: relative;
+}
+
+.battery-icon {
+  display: inline-block;
+  width: 16px;
+  height: 8px;
+  border: 1px solid #fff;
+  border-radius: 2px;
+  padding: 1px;
+  vertical-align: middle;
+}
+
+.battery-level {
+  background: #ffcc00;
+  height: 100%;
+  width: 50%;
+}
+
+.screen {
+  display: none;
+  position: absolute;
+  top: 30px;
   bottom: 0;
   left: 0;
   right: 0;
