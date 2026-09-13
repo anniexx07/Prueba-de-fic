@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Móvil Interactivo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Contenedor del teléfono -->
+  <div class="phone-container">
+    
+    <div class="camera-notch"></div>
+    <div class="speaker-notch"></div>
+
+    <!-- Pantalla -->
+    <div class="phone-screen">
+      
+      <!-- Barra de estado (Hora: 16:09 / Batería al 50%) -->
+      <div class="status-bar">
+        <span>16:09</span>
+        <div class="status-icons">
+          <span>📶 4G</span>
+          <div class="battery-icon">
+            <div class="battery-level"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANTALLA DE INICIO (HOME) -->
+      <div id="home-screen" class="screen active">
+        <!-- Pantalla limpia/Fondo principal -->
+      </div>
+
+      <!-- APP: TELÉFONO -->
+      <div id="phone-app-screen" class="screen">
+        <div class="app-header phone-header">
+          <button class="back-btn" onclick="closeApp()">‹</button>
+          <span>Teléfono</span>
+        </div>
+        <div class="phone-app-content">
+          <div class="call-log">
+            <h3>Historial de llamadas</h3>
+            <div class="call-item incoming">
+              <div>
+                <strong>Personaje A</strong>
+                <p>Entrante (2 min) - 14:20</p>
+              </div>
+              <span>📞</span>
+            </div>
+            <div class="call-item missed">
+              <div>
+                <strong>Número desconocido</strong>
+                <p>Perdida - 11:05</p>
+              </div>
+              <span>📵</span>
+            </div>
+          </div>
+          
+          <div class="keypad">
+            <div class="dial-display" id="dial-display"></div>
+            <div class="keypad-grid">
+              <button onclick="pressDial('1')">1</button>
+              <button onclick="pressDial('2')">2</button>
+              <button onclick="pressDial('3')">3</button>
+              <button onclick="pressDial('4')">4</button>
+              <button onclick="pressDial('5')">5</button>
+              <button onclick="pressDial('6')">6</button>
+              <button onclick="pressDial('7')">7</button>
+              <button onclick="pressDial('8')">8</button>
+              <button onclick="pressDial('9')">9</button>
+              <button onclick="pressDial('*')">*</button>
+              <button onclick="pressDial('0')">0</button>
+              <button onclick="pressDial('#')">#</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- APP: WHATSAPP -->
+      <div id="whatsapp-screen" class="screen">
+        <div class="app-header wa-header">
+          <button class="back-btn" onclick="closeApp()">‹</button>
+          <span>WhatsApp</span>
+        </div>
+        <div class="wa-content">
+          <div id="wa-list-view">
+            <div class="chat-item" onclick="openWaChat('chat-individual')">
+              <div class="avatar-placeholder">👤</div>
+              <div class="chat-info">
+                <strong>Personaje A</strong>
+                <p>¿Has visto la foto?</p>
+              </div>
+            </div>
+            <div class="chat-item" onclick="openWaChat('chat-grupo')">
+              <div class="avatar-placeholder">👥</div>
+              <div class="chat-info">
+                <strong>Grupo: Amigos</strong>
+                <p>Amigo 1: ¡Quedamos hoy!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat Individual -->
+          <div id="chat-individual" class="chat-thread" style="display: none;">
+            <button class="sub-back-btn" onclick="closeWaChat('chat-individual')">← Volver a chats</button>
+            <div class="chat-messages">
+              <div class="msg msg-in">¿Viste la última foto que subieron?</div>
+              <div class="msg msg-out">Sí, la tengo guardada en la Galería.</div>
+            </div>
+          </div>
+
+          <!-- Chat Grupo -->
+          <div id="chat-grupo" class="chat-thread" style="display: none;">
+            <button class="sub-back-btn" onclick="closeWaChat('chat-grupo')">← Volver a chats</button>
+            <div class="chat-messages">
+              <div class="msg msg-in"><strong>Amigo 1:</strong> ¿A qué hora quedamos?</div>
+              <div class="msg msg-out">Paso a buscaros a las 8.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- APP: INSTAGRAM -->
+      <div id="instagram-screen" class="screen">
+        <div class="app-header ig-header">
+          <button class="back-btn" onclick="closeApp()">‹</button>
+          <span>Instagram</span>
+        </div>
+        <div class="ig-nav-tabs">
+          <button onclick="switchIgTab('ig-feed')">📰 Feed</button>
+          <button onclick="switchIgTab('ig-profile')">🔍 Perfil</button>
+        </div>
+
+        <div class="ig-content">
+          <!-- Feed Principal -->
+          <div id="ig-feed" class="ig-tab-content">
+            <div class="ig-post">
+              <div class="post-header"><strong>@usuario_fic</strong></div>
+              <div class="post-image">[ Imagen del Feed ]</div>
+              <div class="post-caption"><strong>@usuario_fic</strong> Un día genial.</div>
+            </div>
+          </div>
+
+          <!-- Perfil y Grid -->
+          <div id="ig-profile" class="ig-tab-content" style="display: none;">
+            <div class="profile-header">
+              <div class="profile-avatar"></div>
+              <strong>Nombre Personaje</strong>
+              <p>@usuario_oficial</p>
+              <small>Biografía del personaje aquí.</small>
+            </div>
+            <div class="highlights-row">
+              <div class="highlight-item">⭕ Viajes</div>
+              <div class="highlight-item">⭕ Fotos</div>
+            </div>
+            <div class="ig-grid">
+              <div class="grid-post-item" onclick="openPostModal()">📷 Post 1</div>
+            </div>
+
+            <!-- Visor modal post de Instagram -->
+            <div id="post-modal" class="post-modal" style="display: none;">
+              <button class="close-viewer-btn" onclick="closePostModal()">❌ Cerrar</button>
+              <div class="post-image">[ Foto Ampliada ]</div>
+              <p><strong>@usuario_oficial:</strong> Descripción detallada de la publicación.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- APP: GALERÍA -->
+      <div id="gallery-screen" class="screen">
+        <div class="app-header gallery-header">
+          <button class="back-btn" onclick="closeApp()">‹</button>
+          <span>Galería</span>
+        </div>
+        <div class="gallery-content">
+          <p class="gallery-title">Fotos recientes</p>
+          <div class="photo-grid">
+            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1015/600/800', 'Foto del viaje')">
+              <img src="https://picsum.photos/id/1015/200/200" alt="Foto 1">
+            </div>
+            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1025/600/800', 'Foto con la mascota')">
+              <img src="https://picsum.photos/id/1025/200/200" alt="Foto 2">
+            </div>
+            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1040/600/800', 'Atardecer')">
+              <img src="https://picsum.photos/id/1040/200/200" alt="Foto 3">
+            </div>
+            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1069/600/800', 'Captura de pantalla')">
+              <img src="https://picsum.photos/id/1069/200/200" alt="Foto 4">
+            </div>
+          </div>
+        </div>
+
+        <!-- Visor modal de foto ampliada -->
+        <div id="photo-viewer" class="photo-viewer" style="display: none;">
+          <button class="close-viewer-btn" onclick="closePhotoViewer()">✕ Cerrar</button>
+          <img id="viewer-img" src="" alt="Imagen ampliada">
+          <p id="viewer-caption"></p>
+        </div>
+      </div>
+
+      <!-- BARRA INFERIOR (DOCK CON APLICACIONES) -->
+      <div class="dock-container">
+        
+        <!-- Teléfono -->
+        <div class="app-icon" onclick="openApp('phone-app-screen')">
+          <div class="icon-shape phone-bg">
+            <span class="emoji-icon">📞</span>
+          </div>
+          <span>Teléfono</span>
+        </div>
+
+        <!-- WhatsApp -->
+        <div class="app-icon" onclick="openApp('whatsapp-screen')">
+          <div class="icon-shape wa-bg">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="icon-img">
+          </div>
+          <span>WhatsApp</span>
+        </div>
+
+        <!-- Instagram -->
+        <div class="app-icon" onclick="openApp('instagram-screen')">
+          <div class="icon-shape ig-bg">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram" class="icon-img">
+          </div>
+          <span>Instagram</span>
+        </div>
+
+        <!-- Galería -->
+        <div class="app-icon" onclick="openApp('gallery-screen')">
+          <div class="icon-shape gallery-bg">
+            <span class="emoji-icon">🏙️</span>
+          </div>
+          <span>Galería</span>
+        </div>
+
+      </div>
+
+      <!-- Botón Home Físico/Sensorial -->
+      <div class="home-bar" onclick="closeApp()"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
