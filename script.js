@@ -1,4 +1,4 @@
-// Abrir y cerrar aplicaciones
+// Abrir y cerrar aplicaciones principales
 function openApp(appId) {
   document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
   document.getElementById(appId).classList.add('active');
@@ -12,13 +12,13 @@ function closeApp() {
   dismissCall();
 }
 
-// Marcar número en Teléfono
+// Marcar número en el Teléfono
 function pressDial(num) {
   const display = document.getElementById('dial-display');
   display.innerText += num;
 }
 
-// WhatsApp
+// Navegación de chats en WhatsApp
 function openWaChat(chatId) {
   document.getElementById('wa-list-view').style.display = 'none';
   document.getElementById(chatId).style.display = 'flex';
@@ -29,7 +29,7 @@ function closeWaChat(chatId) {
   document.getElementById('wa-list-view').style.display = 'block';
 }
 
-// Instagram
+// Navegación en Instagram
 function showIgTab(tab) {
   document.querySelectorAll('.ig-view').forEach(view => view.classList.remove('active'));
   document.querySelectorAll('.ig-nav-btn').forEach(btn => btn.classList.remove('active'));
@@ -59,7 +59,7 @@ function closeIgPostModal() {
   document.getElementById('ig-post-modal').style.display = 'none';
 }
 
-// Notas
+// Lectura de Notas
 function openNoteDetail(noteId) {
   document.getElementById('notes-list').style.display = 'none';
   document.getElementById(noteId).style.display = 'block';
