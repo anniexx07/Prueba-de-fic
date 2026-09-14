@@ -1,23 +1,15 @@
-// Abrir aplicación y ocultar el Dock inferior
+// Abrir y cerrar aplicaciones
 function openApp(appId) {
-  document.querySelectorAll('.screen').forEach(screen => {
-    screen.classList.remove('active');
-  });
+  document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
   document.getElementById(appId).classList.add('active');
-  
-  // Oculta el dock en pantalla completa de la app
   document.getElementById('main-dock').style.display = 'none';
 }
 
-// Volver al inicio de Android (Muestra de nuevo el Dock)
 function closeApp() {
-  document.querySelectorAll('.screen').forEach(screen => {
-    screen.classList.remove('active');
-  });
+  document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
   document.getElementById('home-screen').classList.add('active');
-  
-  // Muestra el dock en la pantalla de inicio
   document.getElementById('main-dock').style.display = 'flex';
+  dismissCall();
 }
 
 // Marcar número en Teléfono
@@ -29,7 +21,7 @@ function pressDial(num) {
 // WhatsApp
 function openWaChat(chatId) {
   document.getElementById('wa-list-view').style.display = 'none';
-  document.getElementById(chatId).style.display = 'block';
+  document.getElementById(chatId).style.display = 'flex';
 }
 
 function closeWaChat(chatId) {
@@ -37,11 +29,10 @@ function closeWaChat(chatId) {
   document.getElementById('wa-list-view').style.display = 'block';
 }
 
-// LÓGICA DE INSTAGRAM (Navegación entre Feed y Búsqueda)
+// Instagram
 function showIgTab(tab) {
   document.querySelectorAll('.ig-view').forEach(view => view.classList.remove('active'));
   document.querySelectorAll('.ig-nav-btn').forEach(btn => btn.classList.remove('active'));
-
   if (tab === 'feed') {
     document.getElementById('ig-feed-view').classList.add('active');
     document.getElementById('ig-feed-btn').classList.add('active');
@@ -51,16 +42,13 @@ function showIgTab(tab) {
   }
 }
 
-// Abrir perfil individual al tocar sobre un reciente
-function openIgProfile(profileId) {
+function openIgProfile(profId) {
   document.querySelectorAll('.ig-view').forEach(view => view.classList.remove('active'));
   document.getElementById('ig-profile-view').classList.add('active');
-  
   document.querySelectorAll('.profile-detail-card').forEach(prof => prof.style.display = 'none');
-  document.getElementById(profileId).style.display = 'block';
+  document.getElementById(profId).style.display = 'block';
 }
 
-// Modal para publicaciones de IG
 function openIgPostModal(title, caption) {
   document.getElementById('ig-modal-title').innerText = title;
   document.getElementById('ig-modal-caption').innerText = caption;
@@ -71,57 +59,46 @@ function closeIgPostModal() {
   document.getElementById('ig-post-modal').style.display = 'none';
 }
 
-// Galería de fotos
-function viewPhoto(imgSrc, caption) {
-  document.getElementById('viewer-img').src = imgSrc;
-  document.getElementById('viewer-caption').innerText = caption;
-  document.getElementById('photo-viewer').style.display = 'flex';
+// Notas
+function openNoteDetail(noteId) {
+  document.getElementById('notes-list').style.display = 'none';
+  document.getElementById(noteId).style.display = 'block';
 }
 
-function closePhotoViewer() {
-  document.getElementById('photo-viewer').style.display = 'none';
-}
-  document.getElementById('wa-list-view').style.display = 'block';
-}
-
-// LÓGICA DE INSTAGRAM (Cambio entre Feed y Búsqueda mediante la Lupa)
-function showIgTab(tab) {
-  document.querySelectorAll('.ig-view').forEach(view => view.classList.remove('active'));
-  document.querySelectorAll('.ig-nav-btn').forEach(btn => btn.classList.remove('active'));
-
-  if (tab === 'feed') {
-    document.getElementById('ig-feed-view').classList.add('active');
-    document.getElementById('ig-feed-btn').classList.add('active');
-  } else if (tab === 'search') {
-    document.getElementById('ig-search-view').classList.add('active');
-    document.getElementById('ig-search-btn').classList.add('active');
-  }
+function closeNoteDetail(noteId) {
+  document.getElementById(noteId).style.display = 'none';
+  document.getElementById('notes-list').style.display = 'block';
 }
 
-// Abrir perfil individual al tocar sobre un reciente
-function openIgProfile(profileId) {
-  document.querySelectorAll('.ig-view').forEach(view => view.classList.remove('active'));
-  document.getElementById('ig-profile-view').classList.add('active');
-  
-  document.querySelectorAll('.profile-detail-card').forEach(prof => prof.style.display = 'none');
-  document.getElementById(profileId).style.display = 'block';
+// Notificaciones y Llamadas automatizadas
+setTimeout(() => {
+  document.getElementById('notif-banner').classList.add('show');
+}, 3000);
+
+setTimeout(() => {
+  document.getElementById('incoming-call').style.display = 'flex';
+}, 7000);
+
+function openAppFromNotif(appId, chatId) {
+  document.getElementById('notif-banner').classList.remove('show');
+  openApp(appId);
+  openWaChat(chatId);
 }
 
-// Modal para publicaciones de IG
-function openIgPostModal(title, caption) {
-  document.getElementById('ig-modal-title').innerText = title;
-  document.getElementById('ig-modal-caption').innerText = caption;
-  document.getElementById('ig-post-modal').style.display = 'flex';
+function dismissCall() {
+  document.getElementById('incoming-call').style.display = 'none';
 }
 
-function closeIgPostModal() {
-  document.getElementById('ig-post-modal').style.display = 'none';
+function acceptCall() {
+  dismissCall();
+  openApp('whatsapp-screen');
+  openWaChat('chat-individual');
 }
 
 // Galería de fotos
-function viewPhoto(imgSrc, caption) {
-  document.getElementById('viewer-img').src = imgSrc;
-  document.getElementById('viewer-caption').innerText = caption;
+function viewPhoto(src, cap) {
+  document.getElementById('viewer-img').src = src;
+  document.getElementById('viewer-caption').innerText = cap;
   document.getElementById('photo-viewer').style.display = 'flex';
 }
 
