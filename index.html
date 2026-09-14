@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Móvil Interactivo</title>
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -13,7 +13,7 @@
 
     <div class="phone-screen">
       
-      <!-- Barra de Estado (Batería al 10% en rojo, 16:09) -->
+      <!-- Barra de Estado Superior -->
       <div class="status-bar">
         <span>16:09</span>
         <div class="status-icons">
@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <!-- Pantalla Llamada Entrante -->
+      <!-- Pantalla de Llamada Entrante -->
       <div id="incoming-call" class="incoming-call-screen">
         <div>
           <p class="call-status-label">Llamada entrante...</p>
@@ -47,8 +47,47 @@
         </div>
       </div>
 
-      <!-- PANTALLA DE INICIO (HOME) -->
-      <div id="home-screen" class="screen active"></div>
+      <!-- PANTALLA DE INICIO (HOME / DESCRITORIO) -->
+      <div id="home-screen" class="screen active">
+        <div class="home-app-grid">
+          <div class="app-icon" onclick="openApp('phone-app-screen')">
+            <div class="icon-shape phone-bg"><span class="emoji-icon">📞</span></div>
+            <span>Teléfono</span>
+          </div>
+          <div class="app-icon" onclick="openApp('whatsapp-screen')">
+            <div class="icon-shape wa-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" class="icon-img"></div>
+            <span>WhatsApp</span>
+          </div>
+          <div class="app-icon" onclick="openApp('instagram-screen')">
+            <div class="icon-shape ig-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="IG" class="icon-img"></div>
+            <span>Instagram</span>
+          </div>
+          <div class="app-icon" onclick="openApp('gallery-screen')">
+            <div class="icon-shape gallery-bg"><span class="emoji-icon">🏙️</span></div>
+            <span>Galería</span>
+          </div>
+          <div class="app-icon" onclick="openApp('notes-screen')">
+            <div class="icon-shape notes-bg"><span class="emoji-icon">📝</span></div>
+            <span>Notas</span>
+          </div>
+          <div class="app-icon" onclick="openApp('maps-screen')">
+            <div class="icon-shape maps-bg"><span class="emoji-icon">🗺️</span></div>
+            <span>Maps</span>
+          </div>
+          <div class="app-icon" onclick="openApp('music-screen')">
+            <div class="icon-shape music-bg"><span class="emoji-icon">🎵</span></div>
+            <span>Música</span>
+          </div>
+          <div class="app-icon" onclick="openApp('calendar-screen')">
+            <div class="icon-shape calendar-bg"><span class="emoji-icon">📅</span></div>
+            <span>Agenda</span>
+          </div>
+          <div class="app-icon" onclick="openApp('voice-screen')">
+            <div class="icon-shape voice-bg"><span class="emoji-icon">🎙️</span></div>
+            <span>Audios</span>
+          </div>
+        </div>
+      </div>
 
       <!-- APP: TELÉFONO -->
       <div id="phone-app-screen" class="screen">
@@ -137,6 +176,7 @@
               <div class="story-item"><div class="story-ring"><div class="story-avatar">👤</div></div><span>Tu historia</span></div>
               <div class="story-item"><div class="story-ring"><div class="story-avatar">👤</div></div><span>Personaje A</span></div>
               <div class="story-item"><div class="story-ring"><div class="story-avatar">👤</div></div><span>Personaje B</span></div>
+              <div class="story-item"><div class="story-ring"><div class="story-avatar">👤</div></div><span>Personaje C</span></div>
             </div>
             <div class="ig-post">
               <div class="post-user-info"><div class="post-avatar"></div><strong>@personaje_a</strong></div>
@@ -165,18 +205,23 @@
                 <div class="search-avatar">👤</div>
                 <div><strong>Personaje B</strong><p>@personaje_b</p></div>
               </div>
+              <div class="search-user-item" onclick="openIgProfile('prof-c')">
+                <div class="search-avatar">👤</div>
+                <div><strong>Personaje C</strong><p>@personaje_c</p></div>
+              </div>
             </div>
           </div>
 
-          <!-- Perfil Detallado -->
+          <!-- Perfiles Detallados -->
           <div id="ig-profile-view" class="ig-view">
             <button class="back-to-search-btn" onclick="showIgTab('search')">← Volver a búsquedas</button>
             <div id="prof-a" class="profile-detail-card" style="display: none;">
               <strong>Personaje A</strong>
               <p class="profile-handle">@personaje_a</p>
-              <p class="profile-bio">Biografía oficial del Personaje A.</p>
+              <p class="profile-bio">Biografía oficial del Personaje A. Amante del arte y los viajes.</p>
               <div class="ig-grid">
-                <div class="grid-post-item" onclick="openIgPostModal('Foto de Italia', '¡Increíbles vistas!')">📷 Post 1</div>
+                <div class="grid-post-item" onclick="openIgPostModal('Foto de Italia', '¡Increíbles vistas desde la colina!')">📷 Post 1</div>
+                <div class="grid-post-item" onclick="openIgPostModal('Foto del museo', 'Arte moderno en directo.')">📷 Post 2</div>
               </div>
             </div>
             <div id="prof-b" class="profile-detail-card" style="display: none;">
@@ -184,7 +229,15 @@
               <p class="profile-handle">@personaje_b</p>
               <p class="profile-bio">Café, libros y fotografía.</p>
               <div class="ig-grid">
-                <div class="grid-post-item" onclick="openIgPostModal('Foto de café', 'Tarde de lectura.')">📷 Post 1</div>
+                <div class="grid-post-item" onclick="openIgPostModal('Foto de café', 'Tarde de lectura tranquila.')">📷 Post 1</div>
+              </div>
+            </div>
+            <div id="prof-c" class="profile-detail-card" style="display: none;">
+              <strong>Personaje C</strong>
+              <p class="profile-handle">@personaje_c</p>
+              <p class="profile-bio">Deportes y naturaleza al aire libre.</p>
+              <div class="ig-grid">
+                <div class="grid-post-item" onclick="openIgPostModal('Foto de montaña', 'Ruta de senderismo en la cima.')">📷 Post 1</div>
               </div>
             </div>
           </div>
@@ -215,6 +268,12 @@
             <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1025/600/800', 'Foto con la mascota')">
               <img src="https://picsum.photos/id/1025/200/200" alt="Foto 2">
             </div>
+            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1040/600/800', 'Atardecer')">
+              <img src="https://picsum.photos/id/1040/200/200" alt="Foto 3">
+            </div>
+            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1069/600/800', 'Captura de pantalla')">
+              <img src="https://picsum.photos/id/1069/200/200" alt="Foto 4">
+            </div>
           </div>
         </div>
 
@@ -243,13 +302,13 @@
           <div id="note-1" class="note-detail" style="display: none;">
             <button class="sub-back-btn" onclick="closeNoteDetail('note-1')">← Volver a Notas</button>
             <h3>Lista de pendientes</h3>
-            <p>- Comprar café<br>- Revisar el correo del trabajo<br>- Devolver libro</p>
+            <p>- Comprar café<br>- Revisar el correo del trabajo<br>- Devolver libro prestado</p>
           </div>
 
           <div id="note-2" class="note-detail" style="display: none;">
             <button class="sub-back-btn" onclick="closeNoteDetail('note-2')">← Volver a Notas</button>
             <h3>Nota secreta</h3>
-            <p>Código de la taquilla: 4829.<br>Recordar llamar a Personaje A.</p>
+            <p>Código de la taquilla: 4829.<br>Recordar llamar a Personaje A a las 20:00.</p>
           </div>
         </div>
       </div>
@@ -259,7 +318,7 @@
         <div class="app-header maps-header"><span>Google Maps</span></div>
         <div class="maps-content">
           <div class="search-input-box"><input type="text" value="📍 Ciudad del Personaje" readonly></div>
-          <img src="https://picsum.photos/id/1043/600/800" alt="Mapa" class="map-img">
+          <img src="https://picsum.photos/id/1043/600/800" alt="Mapa de la ciudad" class="map-img">
         </div>
       </div>
 
@@ -300,20 +359,15 @@
         </div>
       </div>
 
-      <!-- DOCK INFERIOR (Pantalla de Inicio) -->
+      <!-- DOCK INFERIOR DE ACCESO RÁPIDO (En escritorio) -->
       <div class="dock-container" id="main-dock">
         <div class="app-icon" onclick="openApp('phone-app-screen')"><div class="icon-shape phone-bg"><span class="emoji-icon">📞</span></div><span>Teléfono</span></div>
         <div class="app-icon" onclick="openApp('whatsapp-screen')"><div class="icon-shape wa-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" class="icon-img"></div><span>WhatsApp</span></div>
         <div class="app-icon" onclick="openApp('instagram-screen')"><div class="icon-shape ig-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="IG" class="icon-img"></div><span>Instagram</span></div>
         <div class="app-icon" onclick="openApp('gallery-screen')"><div class="icon-shape gallery-bg"><span class="emoji-icon">🏙️</span></div><span>Galería</span></div>
-        <div class="app-icon" onclick="openApp('notes-screen')"><div class="icon-shape notes-bg"><span class="emoji-icon">📝</span></div><span>Notas</span></div>
-        <div class="app-icon" onclick="openApp('maps-screen')"><div class="icon-shape maps-bg"><span class="emoji-icon">🗺️</span></div><span>Maps</span></div>
-        <div class="app-icon" onclick="openApp('music-screen')"><div class="icon-shape music-bg"><span class="emoji-icon">🎵</span></div><span>Música</span></div>
-        <div class="app-icon" onclick="openApp('calendar-screen')"><div class="icon-shape calendar-bg"><span class="emoji-icon">📅</span></div><span>Agenda</span></div>
-        <div class="app-icon" onclick="openApp('voice-screen')"><div class="icon-shape voice-bg"><span class="emoji-icon">🎙️</span></div><span>Audios</span></div>
       </div>
 
-      <!-- BARRA DE NAVEGACIÓN ANDROID INFERIOR -->
+      <!-- BARRA DE NAVEGACIÓN ANDROID INFERIOR (PERMANENTE) -->
       <div class="android-nav-bar">
         <button class="android-btn" onclick="closeApp()">|||</button>
         <button class="android-btn" onclick="closeApp()">⚪</button>
