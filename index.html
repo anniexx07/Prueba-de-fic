@@ -4,13 +4,281 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Móvil Interactivo</title>
-  <link rel="stylesheet" href="style.css?v=2">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background: #0d0d11;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 10px;
+    }
+
+    /* Chasis del Smartphone */
+    .phone-container {
+      width: 320px;
+      height: 620px;
+      background: #1f1f24;
+      border-radius: 40px;
+      border: 4px solid #3a3a40;
+      padding: 6px;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      overflow: hidden;
+    }
+
+    .notch {
+      width: 60px;
+      height: 8px;
+      background: #000;
+      border-radius: 4px;
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #2b5876 0%, #4e4376 100%);
+      border-radius: 32px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Barra de estado */
+    .status-bar {
+      height: 28px;
+      color: #fff;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 15px;
+      background: rgba(0,0,0,0.3);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+    }
+
+    .battery-icon {
+      display: inline-block;
+      width: 16px;
+      height: 8px;
+      border: 1px solid #fff;
+      border-radius: 2px;
+      padding: 1px;
+      vertical-align: middle;
+    }
+
+    .battery-level {
+      background: #ffcc00;
+      height: 100%;
+      width: 50%;
+    }
+
+    /* Pantallas */
+    .screen {
+      display: none;
+      position: absolute;
+      top: 28px;
+      bottom: 35px;
+      left: 0;
+      right: 0;
+      background: #fff;
+      z-index: 5;
+      overflow-y: auto;
+    }
+
+    .screen.active { display: block; }
+    #home-screen { background: transparent; }
+
+    /* Dock Inferior */
+    .dock-container {
+      position: absolute;
+      bottom: 45px;
+      left: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 8px 4px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .app-icon {
+      text-align: center;
+      color: #fff;
+      font-size: 9px;
+      cursor: pointer;
+      width: 48px;
+    }
+
+    .icon-shape {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2px auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .icon-img { width: 24px; height: 24px; object-fit: contain; }
+    .emoji-icon { font-size: 22px; line-height: 1; }
+    .phone-bg { background: #34c759; }
+    .wa-bg { background: #25d366; }
+    .ig-bg { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+    .gallery-bg { background: linear-gradient(#ff9500, #ff5e36); }
+
+    /* Headers */
+    .app-header {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    /* Teléfono */
+    .phone-header { background: #34c759; }
+    .phone-app-content { padding: 10px; font-size: 11px; }
+    .call-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee; }
+    .missed { color: #ff3b30; }
+    .keypad { margin-top: 10px; text-align: center; }
+    .dial-display { height: 20px; font-size: 15px; font-weight: bold; margin-bottom: 5px; }
+    .keypad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 0 15px; }
+    .keypad-grid button { padding: 8px; font-size: 14px; border-radius: 50%; border: 1px solid #ccc; background: #f9f9f9; cursor: pointer; }
+
+    /* WhatsApp */
+    .wa-header { background: #075e54; color: #fff; }
+    .wa-content { background: #efeae2; height: calc(100% - 38px); overflow-y: auto; }
+    .chat-item { display: flex; padding: 10px; background: #fff; border-bottom: 1px solid #eee; cursor: pointer; }
+    .avatar-placeholder { font-size: 22px; margin-right: 10px; }
+    .chat-thread { padding: 10px; }
+    .msg { padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; max-width: 80%; font-size: 11px; }
+    .msg-in { background: #fff; color: #000; }
+    .msg-out { background: #dcf8c6; margin-left: auto; color: #000; }
+    .sub-back-btn { border: none; background: #ddd; padding: 4px 8px; border-radius: 4px; margin-bottom: 8px; cursor: pointer; font-size: 10px; }
+
+    /* Instagram */
+    .ig-header { background: #fff; border-bottom: 1px solid #dbdbdb; color: #000; }
+    .ig-logo-text { font-family: "Georgia", serif; font-size: 16px; font-style: italic; }
+
+    .ig-main-container {
+      height: calc(100% - 78px);
+      overflow-y: auto;
+      background: #fff;
+    }
+
+    .ig-view { display: none; }
+    .ig-view.active { display: block; }
+
+    .stories-bar { display: flex; gap: 10px; padding: 8px; border-bottom: 1px solid #efefef; overflow-x: auto; }
+    .story-item { text-align: center; font-size: 9px; }
+    .story-ring { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); padding: 2px; margin-bottom: 2px; }
+    .story-avatar { width: 100%; height: 100%; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; }
+
+    .ig-post { border-bottom: 1px solid #efefef; margin-bottom: 8px; }
+    .post-user-info { display: flex; align-items: center; gap: 6px; padding: 6px 8px; font-size: 11px; }
+    .post-avatar { width: 22px; height: 22px; border-radius: 50%; background: #ccc; }
+    .post-media-box { background: #f0f0f0; height: 150px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #777; }
+    .post-actions { padding: 4px 8px; font-size: 13px; }
+    .post-caption-box { padding: 0 8px 8px 8px; font-size: 10px; }
+
+    .search-input-box { padding: 8px; }
+    .search-input-box input { width: 100%; padding: 6px 10px; border-radius: 6px; border: 1px solid #ddd; background: #efefef; font-size: 11px; }
+    .recent-search-section { padding: 0 8px; }
+    .section-title { font-size: 11px; font-weight: bold; margin-bottom: 8px; color: #333; }
+    .search-user-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid #f5f5f5; cursor: pointer; font-size: 11px; }
+    .search-avatar { width: 32px; height: 32px; border-radius: 50%; background: #ddd; display: flex; align-items: center; justify-content: center; }
+
+    .back-to-search-btn { border: none; background: none; color: #0095f6; padding: 8px; font-size: 10px; cursor: pointer; }
+    .profile-detail-card { padding: 8px; }
+    .profile-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .profile-avatar-large { width: 50px; height: 50px; border-radius: 50%; background: #bbb; }
+    .profile-stats { display: flex; gap: 12px; text-align: center; font-size: 10px; }
+    .profile-name { font-size: 12px; }
+    .profile-handle { font-size: 10px; color: #666; margin-bottom: 4px; }
+    .profile-bio { font-size: 10px; margin-bottom: 8px; }
+    .ig-grid { display: flex; gap: 3px; flex-wrap: wrap; margin-top: 8px; }
+    .grid-post-item { background: #eee; width: 32%; height: 65px; display: flex; align-items: center; justify-content: center; font-size: 9px; cursor: pointer; }
+
+    .ig-bottom-nav { height: 40px; border-top: 1px solid #dbdbdb; display: flex; justify-content: space-around; align-items: center; background: #fff; }
+    .ig-nav-btn { background: none; border: none; font-size: 16px; cursor: pointer; opacity: 0.5; }
+    .ig-nav-btn.active { opacity: 1; }
+
+    /* Galería */
+    .gallery-header { background: #ff9500; }
+    .gallery-content { padding: 8px; }
+    .gallery-title { font-size: 11px; font-weight: bold; margin-bottom: 8px; color: #333; }
+    .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .photo-item { height: 90px; border-radius: 6px; overflow: hidden; cursor: pointer; }
+    .photo-item img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Visor Modal Fotos */
+    .photo-viewer {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 60;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+    .photo-viewer img { max-width: 100%; max-height: 65%; border-radius: 6px; }
+    .photo-viewer p { color: #fff; margin-top: 8px; font-size: 11px; }
+    .close-viewer-btn { position: absolute; top: 10px; right: 10px; background: #ff3b30; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; }
+
+    /* Barra Android Inferior */
+    .android-nav-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 35px;
+      background: #000;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 40;
+    }
+
+    .android-btn {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 13px;
+      cursor: pointer;
+      padding: 4px 15px;
+    }
+
+    .android-btn:active { color: #fff; }
+  </style>
 </head>
 <body>
 
   <div class="phone-container">
-    <div class="camera-notch"></div>
-    <div class="speaker-notch"></div>
+    <div class="notch"></div>
 
     <div class="phone-screen">
       
@@ -337,474 +605,8 @@
         </div>
       </div>
 
-      <!-- DOCK INFERIOR DE APPS (Solo visible en el escritorio) -->
-      <div class="dock-container" id="main-dock">
-        <div class="app-icon" onclick="openApp('phone-app-screen')">
-          <div class="icon-shape phone-bg"><span class="emoji-icon">📞</span></div>
-          <span>Teléfono</span>
-        </div>
-        <div class="app-icon" onclick="openApp('whatsapp-screen')">
-          <div class="icon-shape wa-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="icon-img"></div>
-          <span>WhatsApp</span>
-        </div>
-        <div class="app-icon" onclick="openApp('instagram-screen')">
-          <div class="icon-shape ig-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram" class="icon-img"></div>
-          <span>Instagram</span>
-        </div>
-        <div class="app-icon" onclick="openApp('gallery-screen')">
-          <div class="icon-shape gallery-bg"><span class="emoji-icon">🏙️</span></div>
-          <span>Galería</span>
-        </div>
-      </div>
-
-      <!-- BARRA DE NAVEGACIÓN ANDROID (Inferior permanente) -->
-      <div class="android-nav-bar">
-        <button class="android-btn" onclick="closeApp()">|||</button>
-        <button class="android-btn" onclick="closeApp()">⚪</button>
-        <button class="android-btn" onclick="closeApp()">◀</button>
-      </div>
-
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
-</strong>
-              <p class="profile-handle">@personaje_b</p>
-              <p class="profile-bio">Perfil oficial de Personaje B. Café, libros y fotografía.</p>
-
-              <div class="highlights-row">
-                <div class="highlight-item">⭕ Cafés</div>
-                <div class="highlight-item">⭕ Libros</div>
-              </div>
-
-              <div class="ig-grid">
-                <div class="grid-post-item" onclick="openIgPostModal('Foto de café', 'El mejor espresso de la ciudad.')">📷 Post 1</div>
-                <div class="grid-post-item" onclick="openIgPostModal('Foto de lectura', 'Tarde tranquila leyendo.')">📷 Post 2</div>
-              </div>
-            </div>
-
-            <!-- Perfil Personaje C -->
-            <div id="prof-c" class="profile-detail-card" style="display: none;">
-              <div class="profile-header-top">
-                <div class="profile-avatar-large"></div>
-                <div class="profile-stats">
-                  <div><strong>15</strong><br>Posts</div>
-                  <div><strong>530</strong><br>Seguidores</div>
-                </div>
-              </div>
-              <strong class="profile-name">Personaje C</strong>
-              <p class="profile-handle">@personaje_c</p>
-              <p class="profile-bio">Cuenta del Personaje C. Deportes y naturaleza.</p>
-
-              <div class="highlights-row">
-                <div class="highlight-item">⭕ Montaña</div>
-              </div>
-
-              <div class="ig-grid">
-                <div class="grid-post-item" onclick="openIgPostModal('Foto de montaña', 'Ruta de senderismo completada.')">📷 Post 1</div>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- BARRA INFERIOR DE INSTAGRAM -->
-        <div class="ig-bottom-nav">
-          <button class="ig-nav-btn active" id="ig-feed-btn" onclick="showIgTab('feed')">🏠</button>
-          <button class="ig-nav-btn" id="ig-search-btn" onclick="showIgTab('search')">🔍</button>
-        </div>
-
-        <!-- Modal para posts de IG -->
-        <div id="ig-post-modal" class="photo-viewer" style="display: none;">
-          <button class="close-viewer-btn" onclick="closeIgPostModal()">✕ Cerrar</button>
-          <div class="modal-img-placeholder" id="ig-modal-title">[ Foto ]</div>
-          <p id="ig-modal-caption"></p>
-        </div>
-      </div>
-
-      <!-- APP: GALERÍA -->
-      <div id="gallery-screen" class="screen">
-        <div class="app-header gallery-header">
-          <span>Galería</span>
-        </div>
-        <div class="gallery-content">
-          <p class="gallery-title">Fotos recientes</p>
-          <div class="photo-grid">
-            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1015/600/800', 'Foto del viaje')">
-              <img src="https://picsum.photos/id/1015/200/200" alt="Foto 1">
-            </div>
-            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1025/600/800', 'Foto con la mascota')">
-              <img src="https://picsum.photos/id/1025/200/200" alt="Foto 2">
-            </div>
-            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1040/600/800', 'Atardecer')">
-              <img src="https://picsum.photos/id/1040/200/200" alt="Foto 3">
-            </div>
-            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1069/600/800', 'Captura de pantalla')">
-              <img src="https://picsum.photos/id/1069/200/200" alt="Foto 4">
-            </div>
-          </div>
-        </div>
-
-        <div id="photo-viewer" class="photo-viewer" style="display: none;">
-          <button class="close-viewer-btn" onclick="closePhotoViewer()">✕ Cerrar</button>
-          <img id="viewer-img" src="" alt="Imagen ampliada">
-          <p id="viewer-caption"></p>
-        </div>
-      </div>
-
-      <!-- DOCK INFERIOR DE APPS (Solo visible en Home) -->
-      <div class="dock-container" id="main-dock">
-        <div class="app-icon" onclick="openApp('phone-app-screen')">
-          <div class="icon-shape phone-bg"><span class="emoji-icon">📞</span></div>
-          <span>Teléfono</span>
-        </div>
-        <div class="app-icon" onclick="openApp('whatsapp-screen')">
-          <div class="icon-shape wa-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="icon-img"></div>
-          <span>WhatsApp</span>
-        </div>
-        <div class="app-icon" onclick="openApp('instagram-screen')">
-          <div class="icon-shape ig-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram" class="icon-img"></div>
-          <span>Instagram</span>
-        </div>
-        <div class="app-icon" onclick="openApp('gallery-screen')">
-          <div class="icon-shape gallery-bg"><span class="emoji-icon">🏙️</span></div>
-          <span>Galería</span>
-        </div>
-      </div>
-
-      <!-- BARRA DE NAVEGACIÓN ANDROID (Inferior permanente) -->
-      <div class="android-nav-bar">
-        <button class="android-btn" onclick="closeApp()">|||</button>
-        <button class="android-btn" onclick="closeApp()">⚪</button>
-        <button class="android-btn" onclick="closeApp()">◀</button>
-      </div>
-
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
-        <div class="phone-app-content">
-          <div class="call-log">
-            <h3>Historial de llamadas</h3>
-            <div class="call-item incoming">
-              <div>
-                <strong>Personaje A</strong>
-                <p>Entrante (2 min) - 14:20</p>
-              </div>
-              <span>📞</span>
-            </div>
-            <div class="call-item missed">
-              <div>
-                <strong>Número desconocido</strong>
-                <p>Perdida - 11:05</p>
-              </div>
-              <span>📵</span>
-            </div>
-          </div>
-          <div class="keypad">
-            <div class="dial-display" id="dial-display"></div>
-            <div class="keypad-grid">
-              <button onclick="pressDial('1')">1</button>
-              <button onclick="pressDial('2')">2</button>
-              <button onclick="pressDial('3')">3</button>
-              <button onclick="pressDial('4')">4</button>
-              <button onclick="pressDial('5')">5</button>
-              <button onclick="pressDial('6')">6</button>
-              <button onclick="pressDial('7')">7</button>
-              <button onclick="pressDial('8')">8</button>
-              <button onclick="pressDial('9')">9</button>
-              <button onclick="pressDial('*')">*</button>
-              <button onclick="pressDial('0')">0</button>
-              <button onclick="pressDial('#')">#</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- APP: WHATSAPP -->
-      <div id="whatsapp-screen" class="screen">
-        <div class="app-header wa-header">
-          <button class="back-btn" onclick="closeApp()">‹</button>
-          <span>WhatsApp</span>
-        </div>
-        <div class="wa-content">
-          <div id="wa-list-view">
-            <div class="chat-item" onclick="openWaChat('chat-individual')">
-              <div class="avatar-placeholder">👤</div>
-              <div class="chat-info">
-                <strong>Personaje A</strong>
-                <p>¿Has visto la foto?</p>
-              </div>
-            </div>
-            <div class="chat-item" onclick="openWaChat('chat-grupo')">
-              <div class="avatar-placeholder">👥</div>
-              <div class="chat-info">
-                <strong>Grupo: Amigos</strong>
-                <p>Amigo 1: ¡Quedamos hoy!</p>
-              </div>
-            </div>
-          </div>
-
-          <div id="chat-individual" class="chat-thread" style="display: none;">
-            <button class="sub-back-btn" onclick="closeWaChat('chat-individual')">← Volver a chats</button>
-            <div class="chat-messages">
-              <div class="msg msg-in">¿Viste la última foto que subieron?</div>
-              <div class="msg msg-out">Sí, la tengo guardada en la Galería.</div>
-            </div>
-          </div>
-
-          <div id="chat-grupo" class="chat-thread" style="display: none;">
-            <button class="sub-back-btn" onclick="closeWaChat('chat-grupo')">← Volver a chats</button>
-            <div class="chat-messages">
-              <div class="msg msg-in"><strong>Amigo 1:</strong> ¿A qué hora quedamos?</div>
-              <div class="msg msg-out">Paso a buscaros a las 8.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- APP: INSTAGRAM -->
-      <div id="instagram-screen" class="screen">
-        <div class="app-header ig-header">
-          <button class="back-btn" onclick="closeApp()">‹</button>
-          <span class="ig-logo-text">Instagram</span>
-        </div>
-
-        <div class="ig-main-container">
-          
-          <!-- VISTA 1: FEED PRINCIPAL -->
-          <div id="ig-feed-view" class="ig-view active">
-            
-            <!-- Barra de Historias (No interactiva) -->
-            <div class="stories-bar">
-              <div class="story-item">
-                <div class="story-ring"><div class="story-avatar">👤</div></div>
-                <span>Tu historia</span>
-              </div>
-              <div class="story-item">
-                <div class="story-ring"><div class="story-avatar">👤</div></div>
-                <span>Personaje A</span>
-              </div>
-              <div class="story-item">
-                <div class="story-ring"><div class="story-avatar">👤</div></div>
-                <span>Personaje B</span>
-              </div>
-              <div class="story-item">
-                <div class="story-ring"><div class="story-avatar">👤</div></div>
-                <span>Personaje C</span>
-              </div>
-            </div>
-
-            <!-- Publicación 1 del Feed -->
-            <div class="ig-post">
-              <div class="post-user-info">
-                <div class="post-avatar"></div>
-                <strong>@personaje_a</strong>
-              </div>
-              <div class="post-media-box">📷 Imagen Publicación 1</div>
-              <div class="post-actions">❤️ 💬 ✈️</div>
-              <div class="post-caption-box">
-                <p><strong>@personaje_a</strong> Paseando por la ciudad esta tarde. #fotografia</p>
-              </div>
-            </div>
-
-            <!-- Publicación 2 del Feed -->
-            <div class="ig-post">
-              <div class="post-user-info">
-                <div class="post-avatar"></div>
-                <strong>@personaje_b</strong>
-              </div>
-              <div class="post-media-box">📷 Imagen Publicación 2</div>
-              <div class="post-actions">❤️ 💬 ✈️</div>
-              <div class="post-caption-box">
-                <p><strong>@personaje_b</strong> Gran café con buena compañía. ☕</p>
-              </div>
-            </div>
-
-            <!-- Publicación 3 del Feed -->
-            <div class="ig-post">
-              <div class="post-user-info">
-                <div class="post-avatar"></div>
-                <strong>@personaje_c</strong>
-              </div>
-              <div class="post-media-box">📷 Imagen Publicación 3</div>
-              <div class="post-actions">❤️ 💬 ✈️</div>
-              <div class="post-caption-box">
-                <p><strong>@personaje_c</strong> Recordando el viaje de la semana pasada.</p>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- VISTA 2: BÚSQUEDA Y BÚSQUEDAS RECIENTES -->
-          <div id="ig-search-view" class="ig-view">
-            <div class="search-input-box">
-              <input type="text" placeholder="🔍 Buscar perfiles..." readonly>
-            </div>
-            
-            <div class="recent-search-section">
-              <p class="section-title">Búsquedas recientes</p>
-              
-              <!-- Reciente 1 -->
-              <div class="search-user-item" onclick="openIgProfile('prof-a')">
-                <div class="search-avatar">👤</div>
-                <div>
-                  <strong>Personaje A</strong>
-                  <p>@personaje_a</p>
-                </div>
-              </div>
-
-              <!-- Reciente 2 -->
-              <div class="search-user-item" onclick="openIgProfile('prof-b')">
-                <div class="search-avatar">👤</div>
-                <div>
-                  <strong>Personaje B</strong>
-                  <p>@personaje_b</p>
-                </div>
-              </div>
-
-              <!-- Reciente 3 -->
-              <div class="search-user-item" onclick="openIgProfile('prof-c')">
-                <div class="search-avatar">👤</div>
-                <div>
-                  <strong>Personaje C</strong>
-                  <p>@personaje_c</p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- VISTA 3: PERFIL DETALLADO (INDIVIDUAL) -->
-          <div id="ig-profile-view" class="ig-view">
-            <button class="back-to-search-btn" onclick="showIgTab('search')">← Volver a búsquedas</button>
-
-            <!-- Perfil Personaje A -->
-            <div id="prof-a" class="profile-detail-card" style="display: none;">
-              <div class="profile-header-top">
-                <div class="profile-avatar-large"></div>
-                <div class="profile-stats">
-                  <div><strong>12</strong><br>Posts</div>
-                  <div><strong>840</strong><br>Seguidores</div>
-                </div>
-              </div>
-              <strong class="profile-name">Personaje A</strong>
-              <p class="profile-handle">@personaje_a</p>
-              <p class="profile-bio">Biografía oficial del Personaje A. Amante del arte y los viajes.</p>
-              
-              <div class="highlights-row">
-                <div class="highlight-item">⭕ Viajes</div>
-                <div class="highlight-item">⭕ Proyectos</div>
-              </div>
-
-              <div class="ig-grid">
-                <div class="grid-post-item" onclick="openIgPostModal('Foto del viaje a Italia', '¡Increíbles vistas desde la colina!')">📷 Post 1</div>
-                <div class="grid-post-item" onclick="openIgPostModal('Foto del museo', 'Arte moderno en directo.')">📷 Post 2</div>
-              </div>
-            </div>
-
-            <!-- Perfil Personaje B -->
-            <div id="prof-b" class="profile-detail-card" style="display: none;">
-              <div class="profile-header-top">
-                <div class="profile-avatar-large"></div>
-                <div class="profile-stats">
-                  <div><strong>8</strong><br>Posts</div>
-                  <div><strong>1.2k</strong><br>Seguidores</div>
-                </div>
-              </div>
-              <strong class="profile-name">Personaje B</strong>
-              <p class="profile-handle">@personaje_b</p>
-              <p class="profile-bio">Perfil oficial de Personaje B. Café, libros y fotografía.</p>
-
-              <div class="highlights-row">
-                <div class="highlight-item">⭕ Cafés</div>
-                <div class="highlight-item">⭕ Libros</div>
-              </div>
-
-              <div class="ig-grid">
-                <div class="grid-post-item" onclick="openIgPostModal('Foto de café', 'El mejor espresso de la ciudad.')">📷 Post 1</div>
-                <div class="grid-post-item" onclick="openIgPostModal('Foto de lectura', 'Tarde tranquila leyendo.')">📷 Post 2</div>
-              </div>
-            </div>
-
-            <!-- Perfil Personaje C -->
-            <div id="prof-c" class="profile-detail-card" style="display: none;">
-              <div class="profile-header-top">
-                <div class="profile-avatar-large"></div>
-                <div class="profile-stats">
-                  <div><strong>15</strong><br>Posts</div>
-                  <div><strong>530</strong><br>Seguidores</div>
-                </div>
-              </div>
-              <strong class="profile-name">Personaje C</strong>
-              <p class="profile-handle">@personaje_c</p>
-              <p class="profile-bio">Cuenta del Personaje C. Deportes y naturaleza.</p>
-
-              <div class="highlights-row">
-                <div class="highlight-item">⭕ Montaña</div>
-              </div>
-
-              <div class="ig-grid">
-                <div class="grid-post-item" onclick="openIgPostModal('Foto de montaña', 'Ruta de senderismo completada.')">📷 Post 1</div>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- BARRA INFERIOR PROPIA DE INSTAGRAM -->
-        <div class="ig-bottom-nav">
-          <button class="ig-nav-btn active" onclick="showIgTab('feed')">🏠</button>
-          <button class="ig-nav-btn" onclick="showIgTab('search')">🔍</button>
-        </div>
-
-        <!-- Visor Modal para fotos de Instagram -->
-        <div id="ig-post-modal" class="photo-viewer" style="display: none;">
-          <button class="close-viewer-btn" onclick="closeIgPostModal()">✕ Cerrar</button>
-          <div class="modal-img-placeholder" id="ig-modal-title">[ Foto ]</div>
-          <p id="ig-modal-caption"></p>
-        </div>
-      </div>
-
-      <!-- APP: GALERÍA -->
-      <div id="gallery-screen" class="screen">
-        <div class="app-header gallery-header">
-          <button class="back-btn" onclick="closeApp()">‹</button>
-          <span>Galería</span>
-        </div>
-        <div class="gallery-content">
-          <p class="gallery-title">Fotos recientes</p>
-          <div class="photo-grid">
-            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1015/600/800', 'Foto del viaje')">
-              <img src="https://picsum.photos/id/1015/200/200" alt="Foto 1">
-            </div>
-            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1025/600/800', 'Foto con la mascota')">
-              <img src="https://picsum.photos/id/1025/200/200" alt="Foto 2">
-            </div>
-            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1040/600/800', 'Atardecer')">
-              <img src="https://picsum.photos/id/1040/200/200" alt="Foto 3">
-            </div>
-            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1069/600/800', 'Captura de pantalla')">
-              <img src="https://picsum.photos/id/1069/200/200" alt="Foto 4">
-            </div>
-          </div>
-        </div>
-
-        <div id="photo-viewer" class="photo-viewer" style="display: none;">
-          <button class="close-viewer-btn" onclick="closePhotoViewer()">✕ Cerrar</button>
-          <img id="viewer-img" src="" alt="Imagen ampliada">
-          <p id="viewer-caption"></p>
-        </div>
-      </div>
-
       <!-- DOCK INFERIOR DE APPS -->
-      <div class="dock-container">
+      <div class="dock-container" id="main-dock">
         <div class="app-icon" onclick="openApp('phone-app-screen')">
           <div class="icon-shape phone-bg"><span class="emoji-icon">📞</span></div>
           <span>Teléfono</span>
@@ -823,7 +625,13 @@
         </div>
       </div>
 
-      <div class="home-bar" onclick="closeApp()"></div>
+      <!-- BARRA DE NAVEGACIÓN ANDROID INFERIOR -->
+      <div class="android-nav-bar">
+        <button class="android-btn" onclick="closeApp()">|||</button>
+        <button class="android-btn" onclick="closeApp()">⚪</button>
+        <button class="android-btn" onclick="closeApp()">◀</button>
+      </div>
+
     </div>
   </div>
 
