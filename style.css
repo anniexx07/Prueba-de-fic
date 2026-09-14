@@ -123,15 +123,12 @@ body {
 .call-status-label { font-size: 12px; color: #94a3b8; margin-bottom: 20px; }
 .call-sublabel { font-size: 11px; color: #cbd5e1; margin-top: 5px; }
 
-.call-avatar {
+.call-avatar-img {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: #334155;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 36px;
+  object-fit: cover;
+  border: 2px solid #fff;
   margin: 0 auto 15px;
   animation: pulse 1.5s infinite;
 }
@@ -251,7 +248,8 @@ body {
 
 /* WhatsApp */
 .wa-content { background: #efeae2; height: calc(100% - 38px); overflow-y: auto; display: flex; flex-direction: column; }
-.chat-item { display: flex; padding: 10px; background: #fff; border-bottom: 1px solid #eee; cursor: pointer; }
+.chat-item { display: flex; align-items: center; padding: 10px; background: #fff; border-bottom: 1px solid #eee; cursor: pointer; }
+.wa-avatar-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; margin-right: 10px; }
 .avatar-placeholder { font-size: 22px; margin-right: 10px; }
 .chat-sub { font-size: 10px; color: gray; }
 .chat-thread { padding: 10px; height: 100%; display: flex; flex-direction: column; }
@@ -263,7 +261,7 @@ body {
 .chat-input-bar input { flex: 1; padding: 6px; border-radius: 15px; border: 1px solid #ccc; font-size: 11px; }
 .chat-send-btn { border: none; background: #075e54; color: #fff; padding: 4px 8px; border-radius: 50%; cursor: pointer; }
 
-/* Instagram */
+/* INSTAGRAM ESTILIZADO CON FOTOS DE PERFIL */
 .ig-header { background: #fff; border-bottom: 1px solid #dbdbdb; color: #000; }
 .ig-logo-text { font-family: "Georgia", serif; font-size: 16px; font-style: italic; }
 .ig-main-container { height: calc(100% - 78px); overflow-y: auto; background: #fff; }
@@ -271,14 +269,15 @@ body {
 .ig-view.active { display: block; }
 
 .stories-bar { display: flex; gap: 10px; padding: 8px; border-bottom: 1px solid #efefef; overflow-x: auto; }
-.story-item { text-align: center; font-size: 9px; }
-.story-ring { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743); padding: 2px; margin-bottom: 2px; }
-.story-avatar { width: 100%; height: 100%; background: #eee; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; }
+.story-item { text-align: center; font-size: 9px; flex-shrink: 0; }
+.story-ring { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743); padding: 2px; margin-bottom: 2px; }
+.story-avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #fff; }
 
 .ig-post { border-bottom: 1px solid #efefef; margin-bottom: 8px; }
-.post-user-info { display: flex; align-items: center; gap: 6px; padding: 6px 8px; font-size: 11px; }
-.post-avatar { width: 22px; height: 22px; border-radius: 50%; background: #ccc; }
-.post-media-box { background: #f0f0f0; height: 140px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #777; }
+.post-user-info { display: flex; align-items: center; gap: 8px; padding: 6px 8px; font-size: 11px; }
+.post-avatar-img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
+.post-media-box { background: #f0f0f0; height: 160px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.post-img { width: 100%; height: 100%; object-fit: cover; }
 .post-actions { padding: 4px 8px; font-size: 13px; }
 .post-caption-box { padding: 0 8px 8px 8px; font-size: 10px; }
 
@@ -286,13 +285,19 @@ body {
 .search-input-box input { width: 100%; padding: 6px 10px; border-radius: 6px; border: 1px solid #ddd; background: #efefef; font-size: 11px; }
 .recent-search-section { padding: 0 8px; }
 .section-title { font-size: 11px; font-weight: bold; margin-bottom: 8px; color: #333; }
-.search-user-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid #f5f5f5; cursor: pointer; font-size: 11px; }
-.search-avatar { width: 30px; height: 30px; border-radius: 50%; background: #ddd; display: flex; align-items: center; justify-content: center; }
+.search-user-item { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid #f5f5f5; cursor: pointer; font-size: 11px; }
+.search-avatar-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 
 .back-to-search-btn { border: none; background: none; color: #0095f6; padding: 6px; font-size: 10px; cursor: pointer; }
 .profile-detail-card { padding: 8px; font-size: 11px; }
+.profile-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.profile-avatar-large { width: 58px; height: 58px; border-radius: 50%; object-fit: cover; border: 1px solid #dbdbdb; }
+.profile-stats { display: flex; gap: 12px; text-align: center; font-size: 10px; }
+.profile-name { font-size: 12px; }
 .profile-handle { font-size: 10px; color: gray; }
 .profile-bio { font-size: 10px; margin: 6px 0; }
+.highlights-row { display: flex; gap: 8px; margin: 8px 0; font-size: 10px; color: #444; }
+.highlight-item { background: #f0f0f0; padding: 4px 8px; border-radius: 12px; }
 .ig-grid { display: flex; gap: 3px; flex-wrap: wrap; margin-top: 8px; }
 .grid-post-item { background: #eee; width: 32%; height: 65px; display: flex; align-items: center; justify-content: center; font-size: 9px; cursor: pointer; }
 
@@ -307,7 +312,7 @@ body {
 .photo-item { height: 85px; background: #ddd; border-radius: 6px; overflow: hidden; cursor: pointer; }
 .photo-item img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Modal Visor Fotos */
+/* Visores Modales */
 .photo-viewer { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 60; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; }
 .photo-viewer img { max-width: 100%; max-height: 65%; border-radius: 6px; }
 .modal-img-placeholder { color: #fff; font-size: 12px; }
