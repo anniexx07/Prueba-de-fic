@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Móvil Interactivo</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
 
@@ -14,7 +14,7 @@
 
     <div class="phone-screen">
       
-      <!-- Barra de Estado -->
+      <!-- Barra de Estado Superior -->
       <div class="status-bar">
         <span>16:09</span>
         <div class="status-icons">
@@ -253,6 +253,124 @@
                 </div>
               </div>
               <strong class="profile-name">Personaje B</strong>
+              <p class="profile-handle">@personaje_b</p>
+              <p class="profile-bio">Perfil oficial de Personaje B. Café, libros y fotografía.</p>
+
+              <div class="highlights-row">
+                <div class="highlight-item">⭕ Cafés</div>
+                <div class="highlight-item">⭕ Libros</div>
+              </div>
+
+              <div class="ig-grid">
+                <div class="grid-post-item" onclick="openIgPostModal('Foto de café', 'El mejor espresso de la ciudad.')">📷 Post 1</div>
+                <div class="grid-post-item" onclick="openIgPostModal('Foto de lectura', 'Tarde tranquila leyendo.')">📷 Post 2</div>
+              </div>
+            </div>
+
+            <!-- Perfil Personaje C -->
+            <div id="prof-c" class="profile-detail-card" style="display: none;">
+              <div class="profile-header-top">
+                <div class="profile-avatar-large"></div>
+                <div class="profile-stats">
+                  <div><strong>15</strong><br>Posts</div>
+                  <div><strong>530</strong><br>Seguidores</div>
+                </div>
+              </div>
+              <strong class="profile-name">Personaje C</strong>
+              <p class="profile-handle">@personaje_c</p>
+              <p class="profile-bio">Cuenta del Personaje C. Deportes y naturaleza.</p>
+
+              <div class="highlights-row">
+                <div class="highlight-item">⭕ Montaña</div>
+              </div>
+
+              <div class="ig-grid">
+                <div class="grid-post-item" onclick="openIgPostModal('Foto de montaña', 'Ruta de senderismo completada.')">📷 Post 1</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- BARRA INFERIOR DE INSTAGRAM -->
+        <div class="ig-bottom-nav">
+          <button class="ig-nav-btn active" id="ig-feed-btn" onclick="showIgTab('feed')">🏠</button>
+          <button class="ig-nav-btn" id="ig-search-btn" onclick="showIgTab('search')">🔍</button>
+        </div>
+
+        <!-- Modal para posts de IG -->
+        <div id="ig-post-modal" class="photo-viewer" style="display: none;">
+          <button class="close-viewer-btn" onclick="closeIgPostModal()">✕ Cerrar</button>
+          <div class="modal-img-placeholder" id="ig-modal-title">[ Foto ]</div>
+          <p id="ig-modal-caption"></p>
+        </div>
+      </div>
+
+      <!-- APP: GALERÍA -->
+      <div id="gallery-screen" class="screen">
+        <div class="app-header gallery-header">
+          <span>Galería</span>
+        </div>
+        <div class="gallery-content">
+          <p class="gallery-title">Fotos recientes</p>
+          <div class="photo-grid">
+            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1015/600/800', 'Foto del viaje')">
+              <img src="https://picsum.photos/id/1015/200/200" alt="Foto 1">
+            </div>
+            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1025/600/800', 'Foto con la mascota')">
+              <img src="https://picsum.photos/id/1025/200/200" alt="Foto 2">
+            </div>
+            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1040/600/800', 'Atardecer')">
+              <img src="https://picsum.photos/id/1040/200/200" alt="Foto 3">
+            </div>
+            <div class="photo-item" onclick="viewPhoto('https://picsum.photos/id/1069/600/800', 'Captura de pantalla')">
+              <img src="https://picsum.photos/id/1069/200/200" alt="Foto 4">
+            </div>
+          </div>
+        </div>
+
+        <div id="photo-viewer" class="photo-viewer" style="display: none;">
+          <button class="close-viewer-btn" onclick="closePhotoViewer()">✕ Cerrar</button>
+          <img id="viewer-img" src="" alt="Imagen ampliada">
+          <p id="viewer-caption"></p>
+        </div>
+      </div>
+
+      <!-- DOCK INFERIOR DE APPS (Solo visible en el escritorio) -->
+      <div class="dock-container" id="main-dock">
+        <div class="app-icon" onclick="openApp('phone-app-screen')">
+          <div class="icon-shape phone-bg"><span class="emoji-icon">📞</span></div>
+          <span>Teléfono</span>
+        </div>
+        <div class="app-icon" onclick="openApp('whatsapp-screen')">
+          <div class="icon-shape wa-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="icon-img"></div>
+          <span>WhatsApp</span>
+        </div>
+        <div class="app-icon" onclick="openApp('instagram-screen')">
+          <div class="icon-shape ig-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram" class="icon-img"></div>
+          <span>Instagram</span>
+        </div>
+        <div class="app-icon" onclick="openApp('gallery-screen')">
+          <div class="icon-shape gallery-bg"><span class="emoji-icon">🏙️</span></div>
+          <span>Galería</span>
+        </div>
+      </div>
+
+      <!-- BARRA DE NAVEGACIÓN ANDROID (Inferior permanente) -->
+      <div class="android-nav-bar">
+        <button class="android-btn" onclick="closeApp()">|||</button>
+        <button class="android-btn" onclick="closeApp()">⚪</button>
+        <button class="android-btn" onclick="closeApp()">◀</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+</strong>
               <p class="profile-handle">@personaje_b</p>
               <p class="profile-bio">Perfil oficial de Personaje B. Café, libros y fotografía.</p>
 
