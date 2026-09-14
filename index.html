@@ -4,7 +4,376 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Móvil Interactivo</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background: #0d0d11;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 10px;
+    }
+
+    /* Chasis del Smartphone */
+    .phone-container {
+      width: 320px;
+      height: 640px;
+      background: #1f1f24;
+      border-radius: 40px;
+      border: 4px solid #3a3a40;
+      padding: 6px;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      overflow: hidden;
+    }
+
+    .notch {
+      width: 60px;
+      height: 8px;
+      background: #000;
+      border-radius: 4px;
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 60;
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      border-radius: 32px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Barra de estado fija superior */
+    .status-bar {
+      height: 28px;
+      color: #fff;
+      font-size: 11px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 15px;
+      background: #000;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+    }
+
+    .battery-icon {
+      display: inline-block;
+      width: 16px;
+      height: 8px;
+      border: 1px solid #fff;
+      border-radius: 2px;
+      padding: 1px;
+      vertical-align: middle;
+    }
+
+    .battery-level {
+      background: #ff3b30;
+      height: 100%;
+      width: 10%;
+    }
+
+    /* Banner Notificación Emergente */
+    .notification-banner {
+      position: absolute;
+      top: -70px;
+      left: 8px;
+      right: 8px;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 8px 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      z-index: 70;
+      transition: top 0.4s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .notification-banner.show { top: 32px; }
+    .notif-icon { font-size: 20px; }
+    .notif-text strong { display: block; font-size: 11px; color: #111; }
+    .notif-text p { font-size: 10px; color: #555; }
+
+    /* Pop-up Llamada Entrante */
+    .incoming-call-screen {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.96);
+      z-index: 80;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 60px 20px 40px;
+      color: #fff;
+      text-align: center;
+    }
+
+    .call-status-label { font-size: 12px; color: #94a3b8; margin-bottom: 20px; }
+    .call-sublabel { font-size: 11px; color: #cbd5e1; margin-top: 5px; }
+
+    .call-avatar-img {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #fff;
+      margin: 0 auto 15px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
+      70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255,255,255,0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+    }
+
+    .call-actions { display: flex; justify-content: space-around; width: 100%; }
+    .call-btn { width: 52px; height: 52px; border-radius: 50%; border: none; font-size: 20px; color: #fff; cursor: pointer; }
+    .accept-btn { background: #22c55e; }
+    .reject-btn { background: #ef4444; }
+
+    /* Contenedor de Pantallas */
+    .screen {
+      display: none;
+      position: absolute;
+      top: 28px;
+      bottom: 35px;
+      left: 0;
+      right: 0;
+      background: #fff;
+      z-index: 5;
+      overflow-y: auto;
+    }
+
+    .screen.active { display: block; }
+    #home-screen { background: transparent; padding: 25px 12px; }
+
+    /* Rejilla de Escritorio */
+    .home-app-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px 10px;
+      justify-items: center;
+    }
+
+    /* Dock Inferior */
+    .dock-container {
+      position: absolute;
+      bottom: 45px;
+      left: 10px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 8px 4px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .app-icon {
+      text-align: center;
+      color: #fff;
+      font-size: 9px;
+      cursor: pointer;
+      width: 50px;
+    }
+
+    .icon-shape {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2px auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .icon-img { width: 24px; height: 24px; object-fit: contain; }
+    .emoji-icon { font-size: 22px; line-height: 1; }
+
+    .phone-bg { background: #34c759; }
+    .wa-bg { background: #25d366; }
+    .ig-bg { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+    .gallery-bg { background: linear-gradient(#ff9500, #ff5e36); }
+    .notes-bg { background: #ffcc00; }
+    .maps-bg { background: #4285f4; }
+    .music-bg { background: #1ed760; }
+    .calendar-bg { background: #eb4034; }
+    .voice-bg { background: #a855f7; }
+
+    /* Headers */
+    .app-header {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      font-weight: bold;
+      color: #fff;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .phone-header { background: #34c759; }
+    .wa-header { background: #075e54; }
+    .gallery-header { background: #ff9500; }
+    .notes-header { background: #e6b800; }
+    .maps-header { background: #4285f4; }
+    .music-header { background: #121212; }
+    .calendar-header { background: #eb4034; }
+    .voice-header { background: #a855f7; }
+
+    /* Teléfono */
+    .phone-app-content { padding: 10px; font-size: 11px; }
+    .call-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #eee; }
+    .missed { color: #ff3b30; }
+    .keypad { margin-top: 10px; text-align: center; }
+    .dial-display { height: 20px; font-size: 15px; font-weight: bold; margin-bottom: 5px; }
+    .keypad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 0 15px; }
+    .keypad-grid button { padding: 8px; font-size: 14px; border-radius: 50%; border: 1px solid #ccc; background: #f9f9f9; cursor: pointer; }
+
+    /* WhatsApp */
+    .wa-content { background: #efeae2; height: calc(100% - 38px); overflow-y: auto; display: flex; flex-direction: column; }
+    .chat-item { display: flex; align-items: center; padding: 10px; background: #fff; border-bottom: 1px solid #eee; cursor: pointer; }
+    .wa-avatar-img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; margin-right: 10px; }
+    .avatar-placeholder { font-size: 22px; margin-right: 10px; }
+    .chat-sub { font-size: 10px; color: gray; }
+    .chat-thread { padding: 10px; height: 100%; display: flex; flex-direction: column; }
+    .chat-messages { flex: 1; overflow-y: auto; }
+    .msg { padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; max-width: 80%; font-size: 11px; }
+    .msg-in { background: #fff; color: #000; }
+    .msg-out { background: #dcf8c6; margin-left: auto; color: #000; }
+    .chat-input-bar { display: flex; gap: 5px; padding: 6px; background: #fff; border-top: 1px solid #ccc; }
+    .chat-input-bar input { flex: 1; padding: 6px; border-radius: 15px; border: 1px solid #ccc; font-size: 11px; }
+    .chat-send-btn { border: none; background: #075e54; color: #fff; padding: 4px 8px; border-radius: 50%; cursor: pointer; }
+
+    /* INSTAGRAM (Layout estricto) */
+    #instagram-screen { display: none; flex-direction: column; }
+    #instagram-screen.active { display: flex; }
+    .ig-header { background: #fff; border-bottom: 1px solid #dbdbdb; color: #000; }
+    .ig-logo-text { font-family: "Georgia", serif; font-size: 16px; font-style: italic; }
+    .ig-main-container { flex: 1; overflow-y: auto; background: #fff; }
+    .ig-view { display: none; }
+    .ig-view.active { display: block; }
+
+    /* Historias */
+    .stories-bar { display: flex; gap: 10px; padding: 8px; border-bottom: 1px solid #efefef; overflow-x: auto; background: #fff; }
+    .story-item { text-align: center; font-size: 9px; flex-shrink: 0; width: 48px; }
+    .story-ring { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); padding: 2px; margin: 0 auto 2px; display: flex; align-items: center; justify-content: center; }
+    .story-avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #fff; display: block; background: #eee; }
+
+    /* Posts */
+    .ig-post { border-bottom: 1px solid #efefef; margin-bottom: 10px; background: #fff; }
+    .post-user-info { display: flex; align-items: center; gap: 8px; padding: 8px 10px; font-size: 11px; font-weight: 600; }
+    .post-avatar-img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    .post-media-box { width: 100%; height: 180px; background: #f0f0f0; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .post-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .post-actions { padding: 6px 10px; font-size: 14px; }
+    .post-caption-box { padding: 0 10px 10px 10px; font-size: 10px; line-height: 1.4; }
+
+    /* Búsqueda */
+    .search-input-box { padding: 8px; }
+    .search-input-box input { width: 100%; padding: 6px 10px; border-radius: 6px; border: 1px solid #ddd; background: #efefef; font-size: 11px; }
+    .recent-search-section { padding: 0 8px; }
+    .section-title { font-size: 11px; font-weight: bold; margin-bottom: 8px; color: #333; }
+    .search-user-item { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid #f5f5f5; cursor: pointer; font-size: 11px; }
+    .search-avatar-img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+
+    /* Perfiles */
+    .back-to-search-btn { border: none; background: none; color: #0095f6; padding: 6px; font-size: 10px; cursor: pointer; }
+    .profile-detail-card { padding: 8px; font-size: 11px; }
+    .profile-header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .profile-avatar-large { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 1px solid #dbdbdb; }
+    .profile-stats { display: flex; gap: 12px; text-align: center; font-size: 10px; }
+    .profile-name { font-size: 12px; display: block; }
+    .profile-handle { font-size: 10px; color: gray; }
+    .profile-bio { font-size: 10px; margin: 6px 0; }
+    .highlights-row { display: flex; gap: 8px; margin: 8px 0; font-size: 10px; color: #444; }
+    .highlight-item { background: #f0f0f0; padding: 4px 8px; border-radius: 12px; }
+    .ig-grid { display: flex; gap: 3px; flex-wrap: wrap; margin-top: 8px; }
+    .grid-post-item { background: #eee; width: 32%; height: 65px; display: flex; align-items: center; justify-content: center; font-size: 9px; cursor: pointer; }
+
+    .ig-bottom-nav { height: 40px; border-top: 1px solid #dbdbdb; display: flex; justify-content: space-around; align-items: center; background: #fff; flex-shrink: 0; }
+    .ig-nav-btn { background: none; border: none; font-size: 16px; cursor: pointer; opacity: 0.5; }
+    .ig-nav-btn.active { opacity: 1; }
+
+    /* Galería */
+    .gallery-content { padding: 8px; }
+    .gallery-title { font-size: 11px; font-weight: bold; margin-bottom: 8px; color: #333; }
+    .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .photo-item { height: 85px; background: #ddd; border-radius: 6px; overflow: hidden; cursor: pointer; }
+    .photo-item img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Visores Modales */
+    .photo-viewer { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 60; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; }
+    .photo-viewer img { max-width: 100%; max-height: 65%; border-radius: 6px; }
+    .modal-img-placeholder { color: #fff; font-size: 12px; }
+    .close-viewer-btn { position: absolute; top: 10px; right: 10px; background: #ff3b30; color: #fff; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; }
+
+    /* Apps Adicionales */
+    .notes-content, .voice-content { padding: 10px; font-size: 11px; }
+    .note-item { border-bottom: 1px solid #eee; padding-bottom: 8px; margin-bottom: 8px; cursor: pointer; }
+    .note-item p { font-size: 10px; color: gray; }
+    .sub-back-btn { border: none; background: #ddd; padding: 3px 8px; border-radius: 4px; font-size: 10px; margin-bottom: 6px; cursor: pointer; }
+
+    .maps-content { height: calc(100% - 38px); overflow: hidden; }
+    .map-img { width: 100%; height: 100%; object-fit: cover; }
+
+    .music-player-view { background: #121212; color: #fff; height: calc(100% - 38px); padding: 15px; text-align: center; }
+    .album-cover { width: 130px; height: 130px; background: #282828; border-radius: 8px; margin: 10px auto; display: flex; align-items: center; justify-content: center; font-size: 40px; box-shadow: 0 8px 20px rgba(0,0,0,0.6); }
+    .music-artist { font-size: 10px; color: #b3b3b3; }
+    .progress-bar-bg { background: #404040; height: 4px; border-radius: 2px; margin: 15px 0 5px; }
+    .progress-bar-fill { background: #1ed760; width: 45%; height: 100%; border-radius: 2px; }
+    .time-labels { display: flex; justify-content: space-between; font-size: 9px; color: #b3b3b3; }
+    .music-controls { font-size: 20px; margin-top: 10px; }
+
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; padding: 10px; text-align: center; font-size: 10px; }
+    .cal-day { padding: 6px 0; background: #f8fafc; border-radius: 4px; }
+    .cal-day.event { background: #fca5a5; font-weight: bold; color: #991b1b; }
+    .event-details { padding: 10px; font-size: 11px; }
+
+    .voice-item { border-bottom: 1px solid #eee; padding: 8px 0; }
+    .voice-sub { font-size: 10px; color: gray; }
+    .voice-transcript { font-size: 10px; margin-top: 4px; font-style: italic; }
+
+    /* Barra Android Inferior */
+    .android-nav-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 35px;
+      background: #000;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 50;
+    }
+    .android-btn { background: none; border: none; color: #888; font-size: 13px; cursor: pointer; padding: 4px 15px; }
+    .android-btn:active { color: #fff; }
+  </style>
 </head>
 <body>
 
@@ -137,7 +506,6 @@
             </div>
           </div>
 
-          <!-- Chat Individual con borrador -->
           <div id="chat-individual" class="chat-thread" style="display: none;">
             <button class="sub-back-btn" onclick="closeWaChat('chat-individual')">← Volver a chats</button>
             <div class="chat-messages">
@@ -150,7 +518,6 @@
             </div>
           </div>
 
-          <!-- Chat Grupo -->
           <div id="chat-grupo" class="chat-thread" style="display: none;">
             <button class="sub-back-btn" onclick="closeWaChat('chat-grupo')">← Volver a chats</button>
             <div class="chat-messages">
@@ -170,10 +537,8 @@
         <div class="app-header ig-header"><span class="ig-logo-text">Instagram</span></div>
         <div class="ig-main-container">
           
-          <!-- Feed Principal -->
           <div id="ig-feed-view" class="ig-view active">
             
-            <!-- Barra de Historias con Fotos de Perfil -->
             <div class="stories-bar">
               <div class="story-item">
                 <div class="story-ring">
@@ -201,7 +566,6 @@
               </div>
             </div>
 
-            <!-- Posts del Feed -->
             <div class="ig-post">
               <div class="post-user-info">
                 <img src="https://picsum.photos/id/64/150/150" alt="Personaje A" class="post-avatar-img">
@@ -226,21 +590,8 @@
               <div class="post-caption-box"><p><strong>@personaje_b</strong> Gran café con buena compañía. ☕</p></div>
             </div>
 
-            <div class="ig-post">
-              <div class="post-user-info">
-                <img src="https://picsum.photos/id/338/150/150" alt="Personaje C" class="post-avatar-img">
-                <strong>@personaje_c</strong>
-              </div>
-              <div class="post-media-box">
-                <img src="https://picsum.photos/id/1043/600/400" alt="Post 3" class="post-img">
-              </div>
-              <div class="post-actions">❤️ 💬 ✈️</div>
-              <div class="post-caption-box"><p><strong>@personaje_c</strong> Recordando el viaje de la semana pasada.</p></div>
-            </div>
-
           </div>
 
-          <!-- Búsqueda y Recientes con Fotos de Perfil -->
           <div id="ig-search-view" class="ig-view">
             <div class="search-input-box"><input type="text" placeholder="🔍 Buscar perfiles..." readonly></div>
             <div class="recent-search-section">
@@ -264,11 +615,9 @@
             </div>
           </div>
 
-          <!-- Perfiles Detallados con Fotos de Perfil Grandes -->
           <div id="ig-profile-view" class="ig-view">
             <button class="back-to-search-btn" onclick="showIgTab('search')">← Volver a búsquedas</button>
             
-            <!-- Perfil Personaje A -->
             <div id="prof-a" class="profile-detail-card" style="display: none;">
               <div class="profile-header-top">
                 <img src="https://picsum.photos/id/64/150/150" alt="Personaje A" class="profile-avatar-large">
@@ -291,44 +640,33 @@
               </div>
             </div>
 
-            <!-- Perfil Personaje B -->
             <div id="prof-b" class="profile-detail-card" style="display: none;">
               <div class="profile-header-top">
                 <img src="https://picsum.photos/id/1027/150/150" alt="Personaje B" class="profile-avatar-large">
                 <div class="profile-stats">
                   <div><strong>8</strong><br>Posts</div>
                   <div><strong>1.2k</strong><br>Seguidores</div>
-                  <div><strong>190</strong><br>Siguiendo</div>
                 </div>
               </div>
               <strong class="profile-name">Personaje B</strong>
               <p class="profile-handle">@personaje_b</p>
               <p class="profile-bio">Café, libros y fotografía.</p>
-              <div class="highlights-row">
-                <div class="highlight-item">⭕ Cafés</div>
-                <div class="highlight-item">⭕ Libros</div>
-              </div>
               <div class="ig-grid">
                 <div class="grid-post-item" onclick="openIgPostModal('Foto de café', 'Tarde de lectura tranquila.')">📷 Post 1</div>
               </div>
             </div>
 
-            <!-- Perfil Personaje C -->
             <div id="prof-c" class="profile-detail-card" style="display: none;">
               <div class="profile-header-top">
                 <img src="https://picsum.photos/id/338/150/150" alt="Personaje C" class="profile-avatar-large">
                 <div class="profile-stats">
                   <div><strong>15</strong><br>Posts</div>
                   <div><strong>530</strong><br>Seguidores</div>
-                  <div><strong>410</strong><br>Siguiendo</div>
                 </div>
               </div>
               <strong class="profile-name">Personaje C</strong>
               <p class="profile-handle">@personaje_c</p>
               <p class="profile-bio">Deportes y naturaleza al aire libre.</p>
-              <div class="highlights-row">
-                <div class="highlight-item">⭕ Montaña</div>
-              </div>
               <div class="ig-grid">
                 <div class="grid-post-item" onclick="openIgPostModal('Foto de montaña', 'Ruta de senderismo en la cima.')">📷 Post 1</div>
               </div>
@@ -453,7 +791,7 @@
         </div>
       </div>
 
-      <!-- DOCK INFERIOR EN ESCRITORIO -->
+      <!-- DOCK INFERIOR -->
       <div class="dock-container" id="main-dock">
         <div class="app-icon" onclick="openApp('phone-app-screen')"><div class="icon-shape phone-bg"><span class="emoji-icon">📞</span></div><span>Teléfono</span></div>
         <div class="app-icon" onclick="openApp('whatsapp-screen')"><div class="icon-shape wa-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" class="icon-img"></div><span>WhatsApp</span></div>
@@ -461,7 +799,7 @@
         <div class="app-icon" onclick="openApp('gallery-screen')"><div class="icon-shape gallery-bg"><span class="emoji-icon">🏙️</span></div><span>Galería</span></div>
       </div>
 
-      <!-- BARRA DE NAVEGACIÓN ANDROID INFERIOR (PERMANENTE) -->
+      <!-- BARRA DE NAVEGACIÓN ANDROID INFERIOR -->
       <div class="android-nav-bar">
         <button class="android-btn" onclick="closeApp()">|||</button>
         <button class="android-btn" onclick="closeApp()">⚪</button>
@@ -471,6 +809,114 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    // Abrir y cerrar aplicaciones principales
+    function openApp(appId) {
+      document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+      document.getElementById(appId).classList.add('active');
+      document.getElementById('main-dock').style.display = 'none';
+    }
+
+    function closeApp() {
+      document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+      document.getElementById('home-screen').classList.add('active');
+      document.getElementById('main-dock').style.display = 'flex';
+      dismissCall();
+    }
+
+    // Marcar número en el Teléfono
+    function pressDial(num) {
+      const display = document.getElementById('dial-display');
+      display.innerText += num;
+    }
+
+    // Navegación de chats en WhatsApp
+    function openWaChat(chatId) {
+      document.getElementById('wa-list-view').style.display = 'none';
+      document.getElementById(chatId).style.display = 'flex';
+    }
+
+    function closeWaChat(chatId) {
+      document.getElementById(chatId).style.display = 'none';
+      document.getElementById('wa-list-view').style.display = 'block';
+    }
+
+    // Navegación en Instagram
+    function showIgTab(tab) {
+      document.querySelectorAll('.ig-view').forEach(view => view.classList.remove('active'));
+      document.querySelectorAll('.ig-nav-btn').forEach(btn => btn.classList.remove('active'));
+      if (tab === 'feed') {
+        document.getElementById('ig-feed-view').classList.add('active');
+        document.getElementById('ig-feed-btn').classList.add('active');
+      } else if (tab === 'search') {
+        document.getElementById('ig-search-view').classList.add('active');
+        document.getElementById('ig-search-btn').classList.add('active');
+      }
+    }
+
+    function openIgProfile(profId) {
+      document.querySelectorAll('.ig-view').forEach(view => view.classList.remove('active'));
+      document.getElementById('ig-profile-view').classList.add('active');
+      document.querySelectorAll('.profile-detail-card').forEach(prof => prof.style.display = 'none');
+      document.getElementById(profId).style.display = 'block';
+    }
+
+    function openIgPostModal(title, caption) {
+      document.getElementById('ig-modal-title').innerText = title;
+      document.getElementById('ig-modal-caption').innerText = caption;
+      document.getElementById('ig-post-modal').style.display = 'flex';
+    }
+
+    function closeIgPostModal() {
+      document.getElementById('ig-post-modal').style.display = 'none';
+    }
+
+    // Lectura de Notas
+    function openNoteDetail(noteId) {
+      document.getElementById('notes-list').style.display = 'none';
+      document.getElementById(noteId).style.display = 'block';
+    }
+
+    function closeNoteDetail(noteId) {
+      document.getElementById(noteId).style.display = 'none';
+      document.getElementById('notes-list').style.display = 'block';
+    }
+
+    // Notificaciones y Llamadas automatizadas
+    setTimeout(() => {
+      document.getElementById('notif-banner').classList.add('show');
+    }, 3000);
+
+    setTimeout(() => {
+      document.getElementById('incoming-call').style.display = 'flex';
+    }, 7000);
+
+    function openAppFromNotif(appId, chatId) {
+      document.getElementById('notif-banner').classList.remove('show');
+      openApp(appId);
+      openWaChat(chatId);
+    }
+
+    function dismissCall() {
+      document.getElementById('incoming-call').style.display = 'none';
+    }
+
+    function acceptCall() {
+      dismissCall();
+      openApp('whatsapp-screen');
+      openWaChat('chat-individual');
+    }
+
+    // Galería de fotos
+    function viewPhoto(src, cap) {
+      document.getElementById('viewer-img').src = src;
+      document.getElementById('viewer-caption').innerText = cap;
+      document.getElementById('photo-viewer').style.display = 'flex';
+    }
+
+    function closePhotoViewer() {
+      document.getElementById('photo-viewer').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
