@@ -37,7 +37,7 @@
       <div id="incoming-call" class="incoming-call-screen">
         <div>
           <p class="call-status-label">Llamada entrante...</p>
-          <div class="call-avatar">👤</div>
+          <img src="https://picsum.photos/id/64/150/150" alt="Personaje A" class="call-avatar-img">
           <h2>Personaje A</h2>
           <p class="call-sublabel">Móvil</p>
         </div>
@@ -47,7 +47,7 @@
         </div>
       </div>
 
-      <!-- PANTALLA DE INICIO (HOME / DESCRITORIO) -->
+      <!-- PANTALLA DE INICIO (HOME / ESCRITORIO) -->
       <div id="home-screen" class="screen active">
         <div class="home-app-grid">
           <div class="app-icon" onclick="openApp('phone-app-screen')">
@@ -128,7 +128,7 @@
         <div class="wa-content">
           <div id="wa-list-view">
             <div class="chat-item" onclick="openWaChat('chat-individual')">
-              <div class="avatar-placeholder">👤</div>
+              <img src="https://picsum.photos/id/64/150/150" alt="Personaje A" class="wa-avatar-img">
               <div><strong>Personaje A</strong><p class="chat-sub">¿Has visto la foto?</p></div>
             </div>
             <div class="chat-item" onclick="openWaChat('chat-grupo')">
@@ -172,74 +172,168 @@
           
           <!-- Feed Principal -->
           <div id="ig-feed-view" class="ig-view active">
+            
+            <!-- Barra de Historias con Fotos de Perfil -->
             <div class="stories-bar">
-              <div class="story-item"><div class="story-ring"><div class="story-avatar">👤</div></div><span>Tu historia</span></div>
-              <div class="story-item"><div class="story-ring"><div class="story-avatar">👤</div></div><span>Personaje A</span></div>
-              <div class="story-item"><div class="story-ring"><div class="story-avatar">👤</div></div><span>Personaje B</span></div>
-              <div class="story-item"><div class="story-ring"><div class="story-avatar">👤</div></div><span>Personaje C</span></div>
+              <div class="story-item">
+                <div class="story-ring">
+                  <img src="https://picsum.photos/id/1005/150/150" alt="Tu historia" class="story-avatar-img">
+                </div>
+                <span>Tu historia</span>
+              </div>
+              <div class="story-item">
+                <div class="story-ring">
+                  <img src="https://picsum.photos/id/64/150/150" alt="Personaje A" class="story-avatar-img">
+                </div>
+                <span>Personaje A</span>
+              </div>
+              <div class="story-item">
+                <div class="story-ring">
+                  <img src="https://picsum.photos/id/1027/150/150" alt="Personaje B" class="story-avatar-img">
+                </div>
+                <span>Personaje B</span>
+              </div>
+              <div class="story-item">
+                <div class="story-ring">
+                  <img src="https://picsum.photos/id/338/150/150" alt="Personaje C" class="story-avatar-img">
+                </div>
+                <span>Personaje C</span>
+              </div>
             </div>
+
+            <!-- Posts del Feed -->
             <div class="ig-post">
-              <div class="post-user-info"><div class="post-avatar"></div><strong>@personaje_a</strong></div>
-              <div class="post-media-box">📷 Imagen Publicación 1</div>
+              <div class="post-user-info">
+                <img src="https://picsum.photos/id/64/150/150" alt="Personaje A" class="post-avatar-img">
+                <strong>@personaje_a</strong>
+              </div>
+              <div class="post-media-box">
+                <img src="https://picsum.photos/id/1015/600/400" alt="Post 1" class="post-img">
+              </div>
               <div class="post-actions">❤️ 💬 ✈️</div>
-              <div class="post-caption-box"><p><strong>@personaje_a</strong> Paseando por la ciudad esta tarde.</p></div>
+              <div class="post-caption-box"><p><strong>@personaje_a</strong> Paseando por la ciudad esta tarde. #fotografia</p></div>
             </div>
+
             <div class="ig-post">
-              <div class="post-user-info"><div class="post-avatar"></div><strong>@personaje_b</strong></div>
-              <div class="post-media-box">📷 Imagen Publicación 2</div>
+              <div class="post-user-info">
+                <img src="https://picsum.photos/id/1027/150/150" alt="Personaje B" class="post-avatar-img">
+                <strong>@personaje_b</strong>
+              </div>
+              <div class="post-media-box">
+                <img src="https://picsum.photos/id/1060/600/400" alt="Post 2" class="post-img">
+              </div>
               <div class="post-actions">❤️ 💬 ✈️</div>
               <div class="post-caption-box"><p><strong>@personaje_b</strong> Gran café con buena compañía. ☕</p></div>
             </div>
+
+            <div class="ig-post">
+              <div class="post-user-info">
+                <img src="https://picsum.photos/id/338/150/150" alt="Personaje C" class="post-avatar-img">
+                <strong>@personaje_c</strong>
+              </div>
+              <div class="post-media-box">
+                <img src="https://picsum.photos/id/1043/600/400" alt="Post 3" class="post-img">
+              </div>
+              <div class="post-actions">❤️ 💬 ✈️</div>
+              <div class="post-caption-box"><p><strong>@personaje_c</strong> Recordando el viaje de la semana pasada.</p></div>
+            </div>
+
           </div>
 
-          <!-- Búsqueda y Recientes -->
+          <!-- Búsqueda y Recientes con Fotos de Perfil -->
           <div id="ig-search-view" class="ig-view">
             <div class="search-input-box"><input type="text" placeholder="🔍 Buscar perfiles..." readonly></div>
             <div class="recent-search-section">
               <p class="section-title">Búsquedas recientes</p>
+              
               <div class="search-user-item" onclick="openIgProfile('prof-a')">
-                <div class="search-avatar">👤</div>
+                <img src="https://picsum.photos/id/64/150/150" alt="Personaje A" class="search-avatar-img">
                 <div><strong>Personaje A</strong><p>@personaje_a</p></div>
               </div>
+
               <div class="search-user-item" onclick="openIgProfile('prof-b')">
-                <div class="search-avatar">👤</div>
+                <img src="https://picsum.photos/id/1027/150/150" alt="Personaje B" class="search-avatar-img">
                 <div><strong>Personaje B</strong><p>@personaje_b</p></div>
               </div>
+
               <div class="search-user-item" onclick="openIgProfile('prof-c')">
-                <div class="search-avatar">👤</div>
+                <img src="https://picsum.photos/id/338/150/150" alt="Personaje C" class="search-avatar-img">
                 <div><strong>Personaje C</strong><p>@personaje_c</p></div>
               </div>
+
             </div>
           </div>
 
-          <!-- Perfiles Detallados -->
+          <!-- Perfiles Detallados con Fotos de Perfil Grandes -->
           <div id="ig-profile-view" class="ig-view">
             <button class="back-to-search-btn" onclick="showIgTab('search')">← Volver a búsquedas</button>
+            
+            <!-- Perfil Personaje A -->
             <div id="prof-a" class="profile-detail-card" style="display: none;">
-              <strong>Personaje A</strong>
+              <div class="profile-header-top">
+                <img src="https://picsum.photos/id/64/150/150" alt="Personaje A" class="profile-avatar-large">
+                <div class="profile-stats">
+                  <div><strong>12</strong><br>Posts</div>
+                  <div><strong>840</strong><br>Seguidores</div>
+                  <div><strong>320</strong><br>Siguiendo</div>
+                </div>
+              </div>
+              <strong class="profile-name">Personaje A</strong>
               <p class="profile-handle">@personaje_a</p>
               <p class="profile-bio">Biografía oficial del Personaje A. Amante del arte y los viajes.</p>
+              <div class="highlights-row">
+                <div class="highlight-item">⭕ Viajes</div>
+                <div class="highlight-item">⭕ Proyectos</div>
+              </div>
               <div class="ig-grid">
                 <div class="grid-post-item" onclick="openIgPostModal('Foto de Italia', '¡Increíbles vistas desde la colina!')">📷 Post 1</div>
                 <div class="grid-post-item" onclick="openIgPostModal('Foto del museo', 'Arte moderno en directo.')">📷 Post 2</div>
               </div>
             </div>
+
+            <!-- Perfil Personaje B -->
             <div id="prof-b" class="profile-detail-card" style="display: none;">
-              <strong>Personaje B</strong>
+              <div class="profile-header-top">
+                <img src="https://picsum.photos/id/1027/150/150" alt="Personaje B" class="profile-avatar-large">
+                <div class="profile-stats">
+                  <div><strong>8</strong><br>Posts</div>
+                  <div><strong>1.2k</strong><br>Seguidores</div>
+                  <div><strong>190</strong><br>Siguiendo</div>
+                </div>
+              </div>
+              <strong class="profile-name">Personaje B</strong>
               <p class="profile-handle">@personaje_b</p>
               <p class="profile-bio">Café, libros y fotografía.</p>
+              <div class="highlights-row">
+                <div class="highlight-item">⭕ Cafés</div>
+                <div class="highlight-item">⭕ Libros</div>
+              </div>
               <div class="ig-grid">
                 <div class="grid-post-item" onclick="openIgPostModal('Foto de café', 'Tarde de lectura tranquila.')">📷 Post 1</div>
               </div>
             </div>
+
+            <!-- Perfil Personaje C -->
             <div id="prof-c" class="profile-detail-card" style="display: none;">
-              <strong>Personaje C</strong>
+              <div class="profile-header-top">
+                <img src="https://picsum.photos/id/338/150/150" alt="Personaje C" class="profile-avatar-large">
+                <div class="profile-stats">
+                  <div><strong>15</strong><br>Posts</div>
+                  <div><strong>530</strong><br>Seguidores</div>
+                  <div><strong>410</strong><br>Siguiendo</div>
+                </div>
+              </div>
+              <strong class="profile-name">Personaje C</strong>
               <p class="profile-handle">@personaje_c</p>
               <p class="profile-bio">Deportes y naturaleza al aire libre.</p>
+              <div class="highlights-row">
+                <div class="highlight-item">⭕ Montaña</div>
+              </div>
               <div class="ig-grid">
                 <div class="grid-post-item" onclick="openIgPostModal('Foto de montaña', 'Ruta de senderismo en la cima.')">📷 Post 1</div>
               </div>
             </div>
+
           </div>
 
         </div>
@@ -359,7 +453,7 @@
         </div>
       </div>
 
-      <!-- DOCK INFERIOR DE ACCESO RÁPIDO (En escritorio) -->
+      <!-- DOCK INFERIOR EN ESCRITORIO -->
       <div class="dock-container" id="main-dock">
         <div class="app-icon" onclick="openApp('phone-app-screen')"><div class="icon-shape phone-bg"><span class="emoji-icon">📞</span></div><span>Teléfono</span></div>
         <div class="app-icon" onclick="openApp('whatsapp-screen')"><div class="icon-shape wa-bg"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" class="icon-img"></div><span>WhatsApp</span></div>
